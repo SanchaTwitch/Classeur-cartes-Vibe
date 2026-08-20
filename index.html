@@ -6,30 +6,54 @@
     <title>Classeur de Cartes Twitch</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; background: #121212; color: white; font-family: 'Roboto Condensed', sans-serif; display: flex; justify-content: center; }
+        /* --- FOND PREMIUM BLINDÉ (Anti-fond gris) --- */
+        html {
+            min-height: 100%;
+            background-color: #151026; /* Si le dégradé casse, c'est ce violet très sombre qui prend le relais, jamais de gris ! */
+        }
+        
+        body { 
+            margin: 0; 
+            padding: 0;
+            min-height: 100vh;
+            background-color: #2b214c;
+            background-image: linear-gradient(135deg, #2b214c 0%, #151026 100%); 
+            background-attachment: fixed; 
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white; 
+            font-family: 'Roboto Condensed', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+        }
         
         /* --- STYLE DU BOUTON TWITCH --- */
-        #login-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; }
-        #login-container h1 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; margin-bottom: 10px; }
-        #login-container p { color: #aaa; margin-bottom: 30px; font-size: 18px; }
+        #login-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; width: 100%; }
+        #login-container h1 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        #login-container p { color: #ccc; margin-bottom: 30px; font-size: 18px; }
         .twitch-btn {
             background-color: #9146FF; color: white; padding: 15px 30px; border-radius: 8px;
             font-size: 20px; font-weight: bold; text-decoration: none; border: none; cursor: pointer;
             box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4); transition: background 0.2s, transform 0.2s;
         }
-        .twitch-btn:hover { background-color: #772ce8; transform: translateY(-2px); }
+        .twitch-btn:hover { background-color: #772ce8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(145, 70, 255, 0.6); }
 
         /* --- STYLE DU CLASSEUR --- */
         #catalogue-container { width: 100%; max-width: 1000px; padding: 20px; display: none; flex-direction: column; min-height: 100vh; }
         .cat-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; margin-top: 20px; }
-        .cat-header-left h1 { font-family: 'Bebas Neue', sans-serif; margin: 0; font-size: 36px; letter-spacing: 2px; color: #fff; }
-        .cat-progress { font-size: 22px; font-weight: bold; color: #ffd700; }
+        .cat-header-left h1 { font-family: 'Bebas Neue', sans-serif; margin: 0; font-size: 36px; letter-spacing: 2px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        
+        /* --- NOUVEAU BLOC DROITE (Compteur + Logo) --- */
+        .cat-header-right { display: flex; align-items: center; gap: 20px; }
+        .cat-progress { font-size: 22px; font-weight: bold; color: #ffd700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        #site-logo { max-height: 60px; max-width: 180px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
         #message-box { text-align: center; font-size: 20px; color: #aaa; margin-top: 50px; }
-        .catalogue-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-content: flex-start; flex: 1; }
+        .catalogue-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-content: flex-start; flex: 1; padding-bottom: 50px; }
 
         /* --- STYLES DES CARTES --- */
-        .mini-card { width: 100px; height: 140px; background: #222; border-radius: 8px; border: 2px solid; position: relative; overflow: hidden; box-shadow: 0 5px 10px rgba(0,0,0,0.5); transition: transform 0.2s; }
-        .mini-card:hover { transform: scale(1.05); cursor: pointer; }
+        .mini-card { width: 100px; height: 140px; background: #222; border-radius: 8px; border: 2px solid; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.6); transition: transform 0.2s; }
+        .mini-card:hover { transform: scale(1.05); cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.8); z-index: 20; }
         .mini-card img { width: 100%; height: 100%; object-fit: cover; }
         .mini-card.commune { border-color: #555; }
         .mini-card.peu-commun { border-color: #2ecc71; }
@@ -60,9 +84,15 @@
         <div class="cat-header-left">
             <h1 id="titre-joueur">Collection de ...</h1>
         </div>
-        <div class="cat-progress">
-            <span id="cat-count">0</span> / <span id="cat-total">0</span> CARTES
+        
+        <!-- COMPTEUR + TON LOGO VIBE -->
+        <div class="cat-header-right">
+            <div class="cat-progress">
+                <span id="cat-count">0</span> / <span id="cat-total">0</span> CARTES
+            </div>
+            <img src="https://cdn.streamelements.com/uploads/01m05rz3p7m3rrgx2b1j56zgsc.webp" alt="Logo Vibe" id="site-logo">
         </div>
+
     </div>
     <div id="message-box">Chargement de la collection...</div>
     <div class="catalogue-grid" id="catalogue-grid"></div>
@@ -78,7 +108,6 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyNn4xNV2QffmZEuhPVSPYTT1CPnvpWcL48LuRogG1676MzJGwU9mLQBx5LbjRpGV6eFA/exec";
 
     // 🗃️ LA LISTE DES CARTES
-    // N'oublie pas de rajouter toutes tes cartes ici petit à petit !
     const allCards = [
         { id: "VIBE-C001", name: "Exemple Commune", rarityClass: "commune", image: "https://via.placeholder.com/150/555555/FFFFFF?text=Commune" },
         { id: "VIBE-PC001", name: "Exemple PC", rarityClass: "peu-commun", image: "https://via.placeholder.com/150/2ecc71/FFFFFF?text=PC" },
