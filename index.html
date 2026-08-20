@@ -582,9 +582,9 @@
     
     document.getElementById('cat-total').innerText = allCards.length;
 
-    // ==========================================
-    // 🔐 SYSTÈME DE CONNEXION TWITCH
-    // ==========================================
+// ==========================================
+// 🔐 SYSTÈME DE CONNEXION TWITCH
+// ==========================================
 
     function loginWithTwitch() {
         const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=`;
@@ -614,7 +614,8 @@
                 document.getElementById('catalogue-container').style.display = 'flex';
                 document.getElementById('titre-joueur').innerText = `Collection de ${viewerName.toUpperCase()}`;
                 
-                fetchCollection(viewerName.toLowerCase());
+                // ✅ MODIFICATION 1 : On garde les majuscules exactes du pseudo
+                fetchCollection(viewerName);
             })
             .catch(err => {
                 alert("Erreur de connexion avec Twitch.");
@@ -628,7 +629,8 @@
     // ==========================================
 
     function fetchCollection(viewer) {
-        let url = `${API_URL}?action=get&viewer=${encodeURIComponent(viewer)}`;
+        // ✅ MODIFICATION 2 : On ajoute un "nocache" pour forcer la mise à jour en direct
+        let url = `${API_URL}?action=get&viewer=${encodeURIComponent(viewer)}&nocache=${new Date().getTime()}`;
 
         fetch(url)
             .then(response => response.json())
