@@ -109,11 +109,477 @@
 
     // 🗃️ LA LISTE DES CARTES
     const allCards = [
-        { id: "VIBE-C001", name: "Exemple Commune", rarityClass: "commune", image: "https://via.placeholder.com/150/555555/FFFFFF?text=Commune" },
-        { id: "VIBE-PC001", name: "Exemple PC", rarityClass: "peu-commun", image: "https://via.placeholder.com/150/2ecc71/FFFFFF?text=PC" },
-        { id: "VIBE-TEST", name: "La Carte Test", rarityClass: "legendaire", image: "https://via.placeholder.com/150/ffd700/FFFFFF?text=TEST" }
+        {
+            "id": "VIBE-C001",
+            "name": "Floppy",
+            "roleName": "Petit Mains",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0689czdvre3yqq32beaytj2.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C002",
+            "name": "Trevon Dawkins",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0anpr75mbqa16grr1yp9keb.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C003",
+            "name": "Yvonne Dawkins",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0ans0hspy8p9rpxasxqm680.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C004",
+            "name": "Sanka Dawkins",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0anv1jrhz6f8ysj77ch0tc3.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C005",
+            "name": "Soline Castellane",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0anwwsqs1cr5ardmeptwdxe.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C006",
+            "name": "Ben Wolfe",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0anz6x90a5j4gxx6mmr8z30.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C007",
+            "name": "Pépito",
+            "roleName": "M18",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0apeastwrmg4ybthgwnqec0.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C008",
+            "name": "Sofia Ortega",
+            "roleName": "Petit Mains",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d1xy55r9qb89w304trjs7w.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C009",
+            "name": "Tom Flinch",
+            "roleName": "LTD Groove Street",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d21qm3bw75wt1v9pfgg15x.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C010",
+            "name": "Harry Fisher",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d3cw8d0j1b0s5r99k3w8pr.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C011",
+            "name": "Edel Shift",
+            "roleName": "Weazel News",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d4c31fnv6x57588yscb4bh.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C012",
+            "name": "Wesley Montellias",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d4mn64fdkpggdv0g1qe62d.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C013",
+            "name": "Aurorah Gdoll",
+            "roleName": "Harmony Family",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d67af4yhp9d74mxgcj6s5f.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C014",
+            "name": "Valeria Amato",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d98v57sk4hxev62wmvrvke.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C015",
+            "name": "Violette Kupna Fazol",
+            "roleName": "BCMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0dbw9had5qe1e6ng4js5na5.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C016",
+            "name": "Stanislas Sarwel",
+            "roleName": "EPPS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e5q7aa92eq576wnq1734cp.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C017",
+            "name": "Summer Templeton",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e61kkbyjwavsbg27by72na.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C018",
+            "name": "Lawrence \"Low\" Davis",
+            "roleName": "Petit Mains",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e6bs7jd44d1d435tyrabrz.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C019",
+            "name": "Wayne Coleman",
+            "roleName": "LSMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e6pq1ev54as4p33ssh7zsa.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C020",
+            "name": "Jake Chevalier",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0eapp11fvdp8s8crwhq2fm8.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C021",
+            "name": "Vesper Storms",
+            "roleName": "The Shadow",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fvv5qyrjvn3abn04rtjnwq.webp",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-C094",
+            "name": "t",
+            "roleName": "Civil",
+            "roleColor": "#fefefe",
+            "weight": 20,
+            "rarityClass": "commune",
+            "rarityLabel": "COMMUNE"
+        },
+        {
+            "id": "VIBE-PC001",
+            "name": "Hank Callahan",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0ane1wcvzpc3jyba1h2was3.webp",
+            "weight": 10,
+            "rarityClass": "peu-commun",
+            "rarityLabel": "PEU COMMUN"
+        },
+        {
+            "id": "VIBE-PC002",
+            "name": "Rosie Price",
+            "roleName": "LSMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e5hgcq97y9bv1hvjg30egq.webp",
+            "weight": 10,
+            "rarityClass": "peu-commun",
+            "rarityLabel": "PEU COMMUN"
+        },
+        {
+            "id": "VIBE-PC003",
+            "name": "Lawrence \"Low\" Davis",
+            "roleName": "Petit Mains",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e6et5k40xyg34axemz46t3.webp",
+            "weight": 10,
+            "rarityClass": "peu-commun",
+            "rarityLabel": "PEU COMMUN"
+        },
+        {
+            "id": "VIBE-PC004",
+            "name": "Ousmane Alhassan",
+            "roleName": "The Shadow",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e6k8d48vknwyt0djfnafe5.webp",
+            "weight": 10,
+            "rarityClass": "peu-commun",
+            "rarityLabel": "PEU COMMUN"
+        },
+        {
+            "id": "VIBE-PC005",
+            "name": "Alexandre Valmont",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fvct39d5ekybz1svece7zn.webp",
+            "weight": 10,
+            "rarityClass": "peu-commun",
+            "rarityLabel": "PEU COMMUN"
+        },
+        {
+            "id": "VIBE-PC006",
+            "name": "Jeanne Cohen Reeves",
+            "roleName": "BCMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fvg7a31b2x7fa0kb2z8qr4.webp",
+            "weight": 10,
+            "rarityClass": "peu-commun",
+            "rarityLabel": "PEU COMMUN"
+        },
+        {
+            "id": "VIBE-R001",
+            "name": "Floppy",
+            "roleName": "Mercenaire",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0678e9ck3qbrp8hht2ckjgr.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R002",
+            "name": "Hank Callahan",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0bgnv8ypnd3104p3r9bk5bs.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R003",
+            "name": "Edel Shift",
+            "roleName": "Weazel News",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d4dzkp9zhjx0kswdfyea3k.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R004",
+            "name": "Valeria Amato",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d8cskjc8cbygz315b08x1t.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R005",
+            "name": "Rosie Price",
+            "roleName": "LSMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e5f3jwbv8pd73p0v1qpwc6.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R006",
+            "name": "Nora Holloway",
+            "roleName": "LSMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e5k7tdw8zx3pybe4rdzrta.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R007",
+            "name": "Stanislas Sarwel",
+            "roleName": "EPPS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0e5pzsbdszn59ydh444hfeh.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R008",
+            "name": "Jeanne Cohen Reeves",
+            "roleName": "BCMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fvg79xkmpgzszygdvmw8s9.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-R009",
+            "name": "Colton Reeves Cohen",
+            "roleName": "Gouvernement Blaine County",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fvpvyp3qgkz67ja3ktc6qv.webp",
+            "weight": 5,
+            "rarityClass": "rare",
+            "rarityLabel": "RARE"
+        },
+        {
+            "id": "VIBE-TR001",
+            "name": "Valoche & Valmont",
+            "roleName": "BCSO",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fwtvfxgjhqkj05zjsxh95d.webp",
+            "weight": 3,
+            "rarityClass": "tres-rare",
+            "rarityLabel": "TRÈS RARE"
+        },
+        {
+            "id": "VIBE-L001",
+            "name": "Floppy",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m08e2hsvwawgpvbegy4fh7k6.webp",
+            "weight": 2,
+            "rarityClass": "legendaire",
+            "rarityLabel": "LÉGENDAIRE"
+        },
+        {
+            "id": "VIBE-L002",
+            "name": "Yuriy Quesh",
+            "roleName": "Sombra Nochnaya",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0ankr7h3r5j01eke176n6mp.webp",
+            "weight": 2,
+            "rarityClass": "legendaire",
+            "rarityLabel": "LÉGENDAIRE"
+        },
+        {
+            "id": "VIBE-L003",
+            "name": "PJJ",
+            "roleName": "Petit Mains",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m087x6yn3jztmzar7tjpsk4y.webp",
+            "weight": 2,
+            "rarityClass": "legendaire",
+            "rarityLabel": "LÉGENDAIRE"
+        },
+        {
+            "id": "VIBE-L004",
+            "name": "Pépito",
+            "roleName": "Mercenaire",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0bj1cekyy20rjmymh3gg99e.webp",
+            "weight": 2,
+            "rarityClass": "legendaire",
+            "rarityLabel": "LÉGENDAIRE"
+        },
+        {
+            "id": "VIBE-L005",
+            "name": "Jeanne Cohen Reeves",
+            "roleName": "BCMS",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0fvg79krmgjhwrfcpnwwqew.webp",
+            "weight": 2,
+            "rarityClass": "legendaire",
+            "rarityLabel": "LÉGENDAIRE"
+        },
+        {
+            "id": "VIBE-M001",
+            "name": "Pépito",
+            "roleName": "Mercenaire",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0aptc68q79mspqv83426qjr.webp",
+            "weight": 1,
+            "rarityClass": "mythique",
+            "rarityLabel": "MYTHIQUE"
+        },
+        {
+            "id": "VIBE-M002",
+            "name": "Copain Gary",
+            "roleName": "Bande à Gary",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0ag4z8dwt86dmjqbydqn54t.webp",
+            "weight": 1,
+            "rarityClass": "mythique",
+            "rarityLabel": "MYTHIQUE"
+        },
+        {
+            "id": "VIBE-M003",
+            "name": "Edel Shift",
+            "roleName": "Weazel News",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d47h43v586tj5kahjxmzvf.webp",
+            "weight": 1,
+            "rarityClass": "mythique",
+            "rarityLabel": "MYTHIQUE"
+        },
+        {
+            "id": "VIBE-M004",
+            "name": "Nicky Valente",
+            "roleName": "Navarro",
+            "roleColor": "#fefefe",
+            "image": "https://cdn.streamelements.com/uploads/01m0d5cec8qx5mjty46vpvpk1p.webp",
+            "weight": 1,
+            "rarityClass": "mythique",
+            "rarityLabel": "MYTHIQUE"
+        }
     ];
-
+    
     document.getElementById('cat-total').innerText = allCards.length;
 
     // ==========================================
