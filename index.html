@@ -673,7 +673,10 @@
         allCards.forEach(card => {
             const count = cardCounts[card.id] || 0;
             const isUnlocked = count > 0;
-            if(isUnlocked) unlockedTotal++;
+            if(isUnlocked) {
+                unlockedTotal++;
+                cardDiv.onclick = () => openModal(card.image, card.name);
+            }
 
             const cardDiv = document.createElement('div');
             cardDiv.className = `mini-card ${card.rarityClass} ${isUnlocked ? '' : 'locked'}`;
@@ -697,7 +700,60 @@
 
         document.getElementById('cat-count').innerText = unlockedTotal;
     }
+// ==========================================
+    // 🔍 SYSTÈME D'AGRANDISSEMENT ET TÉLÉCHARGEMENT
+    // ==========================================
 
+    function openModal(imgSrc, cardName) {
+        document.getElementById('modal-img').src = imgSrc;
+        document.getElementById('modal-title').innerText = cardName;
+        document.getElementById('card-modal').style.display = 'flex';
+    }
+
+    function closeModal(event) {
+        document.getElementById('card-modal').style.display = 'none';
+    }
+
+    function downloadCard() {
+        const imgSrc = document.getElementById('modal-img').src;
+        const cardName = document.getElementById('modal-title').innerText;
+        const btn = document.getElementById('download-btn');
+        
+        btn.innerText = "⏳ Conversion...";
+
+        // On utilise un Canvas caché pour convertir le WebP de StreamElements en PNG propre
+        const img = new Image();
+        img.crossOrigin = "anonymous"; // Permet de manipuler l'image sans erreur de sécurité
+        img.onload = function() {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            // Convertir en PNG
+            const dataURL = canvas.toDataURL("image/png");
+
+            // Forcer le téléchargement
+            const a = document.createElement("a");
+            a.href = dataURL;
+            a.download = `Vibe_Carte_${cardName.replace(/\s+/g, '_')}.png`; 
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            btn.innerText = "✅ Téléchargé !";
+            setTimeout(() => { btn.innerText = "💾 Enregistrer en PNG"; }, 2000);
+        };
+        
+        img.onerror = function() {
+            alert("Erreur lors de la conversion de l'image.");
+            btn.innerText = "💾 Enregistrer en PNG";
+        }
+        
+        img.src = imgSrc;
+    }
+    
     checkTwitchLogin();
 </script>
 </body>
