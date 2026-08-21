@@ -67,46 +67,53 @@
         #download-btn:hover { background-color: #27ae60; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4); }
 
         /* ======================================================= */
-        /* --- DESIGN HD "ANTI-BUG PHOTO" ---                      */
+        /* --- DESIGN HD ULTRA-ROBUSTE (POUR HTML2CANVAS) ---      */
         /* ======================================================= */
         .full-card-container { padding: 15px; background: transparent; display: inline-block; }
         
         .full-card {
             width: 300px; height: 450px; position: relative;
             font-family: 'Roboto Condensed', sans-serif; color: white;
-            border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;
+            border-radius: 10px; overflow: hidden; display: block; /* ANTI-BUG: PAS DE FLEX ICI */
             background: #1a1a1a; box-sizing: border-box; text-align: left;
             border: 4px solid white; 
         }
 
-        /* --- BARRE DU HAUT --- */
+        /* --- BARRE DU HAUT (Hauteur Fixe : 40px) --- */
         .card-header {
-            height: 40px; display: flex; justify-content: space-between; align-items: center;
+            position: absolute; top: 0; left: 0; width: 100%; height: 40px; 
+            display: flex; justify-content: space-between; align-items: center;
             padding: 0 10px; background: rgba(0,0,0,0.5); font-family: 'Bebas Neue', sans-serif;
-            border-bottom: 2px solid rgba(255,255,255,0.1); z-index: 5; position: relative;
+            border-bottom: 2px solid rgba(255,255,255,0.1); z-index: 5; box-sizing: border-box;
         }
-        .rarity-badge { padding: 2px 10px; border-radius: 4px; font-size: 18px; letter-spacing: 1px; }
+        .rarity-badge { padding: 2px 10px; border-radius: 4px; font-size: 18px; /* SUPPRESSION LETTER-SPACING */ }
         .server-logo { max-height: 24px; }
 
-        /* --- L'IMAGE DU JOUEUR --- */
+        /* --- L'IMAGE DU JOUEUR (Hauteur Fixe Absolue) --- */
         .avatar-container {
-            flex: 1; position: relative; overflow: hidden; background-color: black;
-            border-bottom: 4px solid rgba(255,255,255,0.1); z-index: 4;
+            position: absolute; top: 40px; left: 0; width: 100%; height: 265px; /* 450 - 40 - 115(body) - 30(footer) */
+            overflow: hidden; background-color: black;
+            border-bottom: 4px solid rgba(255,255,255,0.1); z-index: 4; box-sizing: border-box;
         }
         #modal-img {
             width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
         }
 
-        /* --- LE TEXTE NÉON --- */
-        .card-body { padding: 15px; text-align: center; z-index: 5; position: relative; background: transparent; }
-        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin: 0; letter-spacing: 1px; text-transform: uppercase; }
-        .player-role { font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 5px; margin-bottom: 0px; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; }
+        /* --- LE TEXTE NÉON (Hauteur Fixe Absolue) --- */
+        .card-body { 
+            position: absolute; top: 305px; left: 0; width: 100%; height: 115px;
+            padding: 15px; text-align: center; z-index: 5; background: transparent; box-sizing: border-box;
+        }
+        /* SUPPRESSION DU LETTER-SPACING POUR ÉVITER LE CHEVAUCHEMENT LORS DE LA CAPTURE */
+        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 38px; margin: 0; text-transform: uppercase; }
+        .player-role { font-size: 15px; font-weight: bold; text-transform: uppercase; margin-top: 5px; margin-bottom: 0px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; }
 
-        /* --- LE FOOTER --- */
+        /* --- LE FOOTER (Hauteur Fixe Absolue : 30px) --- */
         .card-footer {
-            height: 30px; display: flex; justify-content: center; align-items: center;
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 30px; 
+            display: flex; justify-content: center; align-items: center; text-align: center;
             background: rgba(0,0,0,0.5); font-size: 12px; color: rgba(255,255,255,0.3);
-            border-top: 1px solid rgba(255,255,255,0.1); z-index: 5; position: relative;
+            border-top: 1px solid rgba(255,255,255,0.1); z-index: 5; box-sizing: border-box;
         }
 
         /* REFLETS HOLOGRAPHIQUES DU WIDGET */
@@ -160,7 +167,7 @@
     <div class="catalogue-grid" id="catalogue-grid"></div>
 </div>
 
-<!-- FENÊTRE D'AGRANDISSEMENT -->
+<!-- FENÊTRE D'AGRANDISSEMENT (RÉSISTANTE À LA CAPTURE) -->
 <div id="card-modal" class="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeModal(event)">&times;</span>
@@ -184,8 +191,8 @@
                     <div class="player-role" id="modal-role">Rôle</div>
                 </div>
                 
-                <div class="card-footer">
-                    <span id="modal-footer-info">#000 | Tirée par XYZ</span>
+                <div class="card-footer" id="modal-footer-info">
+                    <!-- Footer injecté en JS -->
                 </div>
 
             </div>
@@ -235,7 +242,6 @@
         { "id": "VIBE-PC004", "name": "Ousmane Alhassan", "roleName": "The Shadow", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h3cms9r4d1khe70y8s07ks.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC005", "name": "Alexandre Valmont", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2jjmj89nbnt4e1baw97ms.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC006", "name": "Jeanne Cohen Reeves", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2c68qms3dzympef9050zd.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
-        { "id": "VIBE-PC007", "name": "Valeria Amato", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h3vnbj1gjf4veey6da8014.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC008", "name": "Sam Bishop", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1zb815pj67r1pnh6zptsy.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC009", "name": "Jean Michel De La Tour", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1gdf3ng2wfw4hjbqcfqzq.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC010", "name": "Aurorah Gdoll", "roleName": "Harmony Family", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h45dvmxex28jj067804y7v.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
@@ -411,7 +417,7 @@
     }
 
     // ==========================================
-    // 🔍 SYSTÈME D'AGRANDISSEMENT ET TÉLÉCHARGEMENT (ANTI-BUG HTML2CANVAS)
+    // 🔍 SYSTÈME D'AGRANDISSEMENT ET TÉLÉCHARGEMENT
     // ==========================================
 
     function openModal(card) {
@@ -434,6 +440,7 @@
         
         document.getElementById('modal-rarity-badge').style.backgroundColor = rColor;
         document.getElementById('modal-rarity-badge').style.color = (card.rarityClass === 'peu-commun' || card.rarityClass === 'legendaire' || card.rarityClass === 'rare') ? 'black' : 'white';
+        document.getElementById('modal-rarity-badge').innerText = card.rarityLabel;
         
         titleEl.innerText = card.name;
         
@@ -458,7 +465,9 @@
         const holoEl = document.getElementById('modal-holo');
         holoEl.className = `holographic-glare holo-${card.rarityClass}`;
         
-        document.getElementById('modal-footer-info').innerText = `#${card.id} | Tirée par ${currentViewerName}`;
+        // CORRECTION DU BUG DES ESPACES MANQUANTS DANS LE FOOTER
+        document.getElementById('modal-footer-info').innerHTML = `#${card.id} &nbsp;|&nbsp; Tirée par ${currentViewerName}`;
+        
         document.getElementById('card-modal').style.display = 'flex';
     }
 
@@ -474,30 +483,34 @@
         
         btn.innerText = "📸 Création de la carte...";
         
-        if(holoEl) holoEl.style.animation = 'none';
+        // On masque l'hologramme pour ne pas bugger la photo
+        if(holoEl) holoEl.style.display = 'none';
 
-        html2canvas(captureZone, {
-            useCORS: true,
-            backgroundColor: null, 
-            scale: 2
-        }).then(canvas => {
-            if(holoEl) holoEl.style.animation = '';
+        // Petit délai pour laisser le navigateur ajuster l'affichage avant la photo
+        setTimeout(() => {
+            html2canvas(captureZone, {
+                useCORS: true,
+                backgroundColor: null, 
+                scale: 2
+            }).then(canvas => {
+                if(holoEl) holoEl.style.display = 'block';
 
-            const dataURL = canvas.toDataURL("image/png");
-            const a = document.createElement("a");
-            a.href = dataURL;
-            a.download = `Vibe_Carte_${cardName.replace(/\s+/g, '_')}.png`; 
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            btn.innerText = "✅ Carte Téléchargée !";
-            setTimeout(() => { btn.innerText = "💾 Télécharger la Carte"; }, 2000);
-        }).catch(err => {
-            if(holoEl) holoEl.style.animation = '';
-            alert("Erreur lors de la création de la carte.");
-            btn.innerText = "💾 Télécharger la Carte";
-        });
+                const dataURL = canvas.toDataURL("image/png");
+                const a = document.createElement("a");
+                a.href = dataURL;
+                a.download = `Vibe_Carte_${cardName.replace(/\s+/g, '_')}.png`; 
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                btn.innerText = "✅ Carte Téléchargée !";
+                setTimeout(() => { btn.innerText = "💾 Télécharger la Carte"; }, 2000);
+            }).catch(err => {
+                if(holoEl) holoEl.style.display = 'block';
+                alert("Erreur lors de la création de la carte.");
+                btn.innerText = "💾 Télécharger la Carte";
+            });
+        }, 150);
     }
     
     checkTwitchLogin();
