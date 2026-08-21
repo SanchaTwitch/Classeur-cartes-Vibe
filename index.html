@@ -67,14 +67,14 @@
         #download-btn:hover { background-color: #27ae60; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4); }
 
         /* ======================================================= */
-        /* --- DESIGN HD  ---      */
+        /* --- DESIGN HD ULTRA-ROBUSTE (POUR HTML2CANVAS) ---      */
         /* ======================================================= */
         .full-card-container { padding: 15px; background: transparent; display: inline-block; }
         
         .full-card {
             width: 300px; height: 450px; position: relative;
             font-family: 'Roboto Condensed', sans-serif; color: white;
-            border-radius: 10px; overflow: hidden; display: block; /* ANTI-BUG: PAS DE FLEX ICI */
+            border-radius: 10px; overflow: hidden; display: block; 
             background: #1a1a1a; box-sizing: border-box; text-align: left;
             border: 4px solid white; 
         }
@@ -86,12 +86,13 @@
             padding: 0 10px; background: rgba(0,0,0,0.5); font-family: 'Bebas Neue', sans-serif;
             border-bottom: 2px solid rgba(255,255,255,0.1); z-index: 5; box-sizing: border-box;
         }
-        .rarity-badge { padding: 2px 10px; border-radius: 4px; font-size: 18px; /* SUPPRESSION LETTER-SPACING */ }
+        /* SUPPRESSION VOLONTAIRE DU LETTER-SPACING POUR ÉVITER LES BUGS */
+        .rarity-badge { padding: 2px 10px; border-radius: 4px; font-size: 18px; }
         .server-logo { max-height: 24px; }
 
         /* --- L'IMAGE DU JOUEUR --- */
         .avatar-container {
-            position: absolute; top: 40px; left: 0; width: 100%; height: 265px; /* 450 - 40 - 115(body) - 30(footer) */
+            position: absolute; top: 40px; left: 0; width: 100%; height: 265px;
             overflow: hidden; background-color: black;
             border-bottom: 4px solid rgba(255,255,255,0.1); z-index: 4; box-sizing: border-box;
         }
@@ -99,14 +100,14 @@
             width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
         }
 
-        /* --- LE TEXTE NÉON  --- */
+        /* --- LE TEXTE NÉON --- */
         .card-body { 
             position: absolute; top: 305px; left: 0; width: 100%; height: 115px;
             padding: 15px; text-align: center; z-index: 5; background: transparent; box-sizing: border-box;
         }
-
-        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 38px; margin: 0; text-transform: uppercase; }
-        .player-role { font-size: 15px; font-weight: bold; text-transform: uppercase; margin-top: 5px; margin-bottom: 0px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; }
+        /* SUPPRESSION TEXT-TRANSFORM ET LETTER SPACING (GÉRÉ EN JAVASCRIPT) */
+        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 38px; margin: 0; }
+        .player-role { font-size: 15px; font-weight: bold; margin-top: 5px; margin-bottom: 0px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; }
 
         /* --- LE FOOTER --- */
         .card-footer {
@@ -182,6 +183,7 @@
                     <img class="server-logo" src="https://cdn.streamelements.com/uploads/01m05rz3p7m3rrgx2b1j56zgsc.webp" alt="Vibe Logo" crossorigin="anonymous">
                 </div>
                 
+                <!-- BALISE IMG POUR ÉVITER LA DÉFORMATION -->
                 <div class="avatar-container">
                     <img id="modal-img" src="" crossorigin="anonymous">
                 </div>
@@ -228,17 +230,17 @@
         { "id": "VIBE-C015", "name": "Violette Kupna Fazol", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h3mjg521pew1g25b1qt71b.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C016", "name": "Stanislas Sarwel", "roleName": "EPPS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h35ms78m8m7d23q2jv0ta2.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C017", "name": "Summer Templeton", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h3eyxg3n7tqmzg0d744esg.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
-        { "id": "VIBE-C018", "name": "Lawrence \"Low\" Davis", "roleName": "Petites Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2xb4e4ejcd8c9y2xdv0nd.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
+        { "id": "VIBE-C018", "name": "Lawrence Davis", "roleName": "Petites Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2xb4e4ejcd8c9y2xdv0nd.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C019", "name": "Wayne Coleman", "roleName": "LSMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h3hzttvygztmerh0hqewfq.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C020", "name": "Jake Chevalier", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2p8vc53dz36hm1a3k35pq.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C021", "name": "Vesper Storms", "roleName": "The Shadow", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h25q6hg1r0jf6xyhq4nm3x.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C022", "name": "Jean Michel De La Tour", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1mm2r84zyqvpdey779mx5.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C023", "name": "Finn Dwyer", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h6677dax06ft3pp8c7evg7.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
-        { "id": "VIBE-C024", "name": "Raedwin \"Crocro\" Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h69deyg8j0q9e3wb9yd0y7.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
+        { "id": "VIBE-C024", "name": "Raedwin Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h69deyg8j0q9e3wb9yd0y7.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C025", "name": "Nicky Valente", "roleName": "Petites Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h6zgdpgc9fczra8wejyatk.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-PC001", "name": "Hank Callahan", "roleName": "Sombra Nochnaya", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h58wqwcr3m7t9fpsacb3g5.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC002", "name": "Rosie Price", "roleName": "LSMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h30954jj7q9r1aqz2cpw6d.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
-        { "id": "VIBE-PC003", "name": "Lawrence \"Low\" Davis", "roleName": "Petites Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2v7bjp9h9gc0h84qae2r3.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
+        { "id": "VIBE-PC003", "name": "Lawrence Davis", "roleName": "Petites Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2v7bjp9h9gc0h84qae2r3.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC004", "name": "Ousmane Alhassan", "roleName": "The Shadow", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h3cms9r4d1khe70y8s07ks.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC005", "name": "Alexandre Valmont", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2jjmj89nbnt4e1baw97ms.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC006", "name": "Jeanne Cohen Reeves", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2c68qms3dzympef9050zd.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
@@ -246,7 +248,7 @@
         { "id": "VIBE-PC009", "name": "Jean Michel De La Tour", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1gdf3ng2wfw4hjbqcfqzq.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC010", "name": "Aurorah Gdoll", "roleName": "Harmony Family", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h45dvmxex28jj067804y7v.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC011", "name": "Victoria & Finn", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h6c3ppjsytd4c6jdzmygkc.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
-        { "id": "VIBE-PC012", "name": "Raedwin \"Crocro\" Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h73nq440w7wacqjr514gbz.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
+        { "id": "VIBE-PC012", "name": "Raedwin Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h73nq440w7wacqjr514gbz.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-R001", "name": "Floppy", "roleName": "Mercenaire", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h5trcmxyxj5725hf4x4ra8.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R002", "name": "Hank Callahan", "roleName": "Sombra Nochnaya", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h4wtxbxgw8aagz4day5kc8.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R003", "name": "Edel Shift", "roleName": "Weazel News", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h4c21y8ye6463wvvwy19hy.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
@@ -256,15 +258,15 @@
         { "id": "VIBE-R007", "name": "Stanislas Sarwel", "roleName": "EPPS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h385ff5atsxd3fnn9dzqh0.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R008", "name": "Jeanne Cohen Reeves", "roleName": "BCMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2fw27vk528kgj7sqxyh8f.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R009", "name": "Colton Reeves Cohen", "roleName": "Gouvernement Blaine County", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h2822ez2yatepndsjrv4vx.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
-        { "id": "VIBE-R010", "name": "Neve \"Mouse\" Read", "roleName": "The Family", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1s8fsn3c6kas0we05jbxt.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
+        { "id": "VIBE-R010", "name": "Neve Read", "roleName": "The Family", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1s8fsn3c6kas0we05jbxt.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R011", "name": "Jean Michel De La Tour", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1jp9kev8mbv5hh81a9rcw.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R012", "name": "Guet Apens Valente", "roleName": "Piège", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h6gkefdvchswbh4ey9zkqy.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
-        { "id": "VIBE-R013", "name": "Raedwin \"Crocro\" Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h77sq5qkk82n6mf1e15rfs.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
+        { "id": "VIBE-R013", "name": "Raedwin Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h77sq5qkk82n6mf1e15rfs.webp", "weight": 5, "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-TR001", "name": "Valeria & Valmont", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h21s69wbx0xfn0767pr8j6.webp", "weight": 3, "rarityClass": "tres-rare", "rarityLabel": "TRÈS RARE" },
         { "id": "VIBE-TR002", "name": "Meiana Fox", "roleName": "LTD Groove Street", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h1wf2cj0s0ny9rc8xa7fat.webp", "weight": 3, "rarityClass": "tres-rare", "rarityLabel": "TRÈS RARE" },
         { "id": "VIBE-TR003", "name": "Miko & Jamy", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h10hpdmrqt9xxapnbahqj4.webp", "weight": 3, "rarityClass": "tres-rare", "rarityLabel": "TRÈS RARE" },
         { "id": "VIBE-TR004", "name": "Stank Karin \"Floppy\"", "roleName": "Sombra Nochnaya", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h0wky85ce3rt5jr1vjsb7s.webp", "weight": 3, "rarityClass": "tres-rare", "rarityLabel": "TRÈS RARE" },
-        { "id": "VIBE-TR005", "name": "Raedwin \"Crocro\" Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h7arx1kyevdq8c014zf6m1.webp", "weight": 3, "rarityClass": "tres-rare", "rarityLabel": "TRÈS RARE" },
+        { "id": "VIBE-TR005", "name": "Raedwin Kingscroft", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h7arx1kyevdq8c014zf6m1.webp", "weight": 3, "rarityClass": "tres-rare", "rarityLabel": "TRÈS RARE" },
         { "id": "VIBE-L001", "name": "Floppy", "roleName": "Sombra Nochnaya", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h0qz7q6ckmarn78k5jgvgb.webp", "weight": 2, "rarityClass": "legendaire", "rarityLabel": "LÉGENDAIRE" },
         { "id": "VIBE-L002", "name": "Yuriy Quesh", "roleName": "Sombra Nochnaya", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h56r6hfzhn0xynpq34d87n.webp", "weight": 2, "rarityClass": "legendaire", "rarityLabel": "LÉGENDAIRE" },
         { "id": "VIBE-L003", "name": "PJJ", "roleName": "Petites Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0h5pfhvv9pzpqvtv4hfcvar.webp", "weight": 2, "rarityClass": "legendaire", "rarityLabel": "LÉGENDAIRE" },
@@ -433,18 +435,20 @@
 
         const renderDiv = document.getElementById('full-card-render');
         const titleEl = document.getElementById('modal-title');
+        const badgeEl = document.getElementById('modal-rarity-badge');
+        const roleEl = document.getElementById('modal-role');
+        const footerEl = document.getElementById('modal-footer-info');
         
         renderDiv.style.borderColor = rColor;
         renderDiv.style.background = bgGradient;
         renderDiv.style.boxShadow = `0 15px 35px rgba(0,0,0,0.8), 0 0 20px ${rColor}`;
         
-        const badgeEl = document.getElementById('modal-rarity-badge');
         badgeEl.style.backgroundColor = rColor;
         badgeEl.style.color = (card.rarityClass === 'peu-commun' || card.rarityClass === 'legendaire' || card.rarityClass === 'rare') ? 'black' : 'white';
-        // ✅ LA LIGNE CORRIGÉE EST ICI :
-        badgeEl.innerText = card.rarityLabel; 
         
-        titleEl.innerText = card.name;
+        badgeEl.innerHTML = card.rarityLabel.toUpperCase().split(' ').join('&nbsp;');
+        titleEl.innerHTML = card.name.toUpperCase().split(' ').join('&nbsp;');
+        roleEl.innerHTML = card.roleName.toUpperCase().split(' ').join('&nbsp;');
         
         if(card.rarityClass === 'mythique') {
             titleEl.style.color = '#ffb3c6';
@@ -460,15 +464,13 @@
             titleEl.style.textShadow = `0 0 10px ${rColor}`;
         }
 
-        document.getElementById('modal-role').innerText = card.roleName;
-
         document.getElementById('modal-img').src = card.image + '?nocache=' + new Date().getTime();
         
         const holoEl = document.getElementById('modal-holo');
         holoEl.className = `holographic-glare holo-${card.rarityClass}`;
         
-        // CORRECTION DU BUG DES ESPACES MANQUANTS DANS LE FOOTER
-        document.getElementById('modal-footer-info').innerHTML = `#${card.id} &nbsp;|&nbsp; Tirée par ${currentViewerName}`;
+        let safeViewerName = currentViewerName ? currentViewerName.split(' ').join('&nbsp;') : "Inconnu";
+        footerEl.innerHTML = `#${card.id}&nbsp;&nbsp;|&nbsp;&nbsp;Tirée&nbsp;par&nbsp;${safeViewerName}`;
         
         document.getElementById('card-modal').style.display = 'flex';
     }
@@ -485,10 +487,8 @@
         
         btn.innerText = "📸 Création de la carte...";
         
-        // On masque l'hologramme pour ne pas bugger la photo
         if(holoEl) holoEl.style.display = 'none';
 
-        // Petit délai pour laisser le navigateur ajuster l'affichage avant la photo
         setTimeout(() => {
             html2canvas(captureZone, {
                 useCORS: true,
@@ -512,7 +512,7 @@
                 alert("Erreur lors de la création de la carte.");
                 btn.innerText = "💾 Télécharger la Carte";
             });
-        }, 150);
+        }, 300);
     }
     
     checkTwitchLogin();
