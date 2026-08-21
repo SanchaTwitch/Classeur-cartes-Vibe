@@ -57,7 +57,7 @@
         .mini-count { position: absolute; top: 4px; right: 4px; background: #e74c3c; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 14px; padding: 2px 6px; border-radius: 20px; border: 1px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.7); z-index: 10; letter-spacing: 1px; }
         .mini-card.locked .mini-count { display: none; }
 
-        /* --- MODAL ET BOUTON DE TÉLÉCHARGEMENT --- */
+        /* --- MODAL ET BOUTON --- */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { text-align: center; position: relative; animation: zoomIn 0.3s ease; display: flex; flex-direction: column; align-items: center; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -67,7 +67,7 @@
         #download-btn:hover { background-color: #27ae60; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4); }
 
         /* ======================================================= */
-        /* --- DESIGN DE LA VRAIE CARTE (IMPORTÉ DU WIDGET) ---    */
+        /* --- DESIGN HD "ANTI-BUG PHOTO" ---                      */
         /* ======================================================= */
         .full-card-container { padding: 15px; background: transparent; display: inline-block; }
         
@@ -75,61 +75,41 @@
             width: 300px; height: 450px; position: relative;
             font-family: 'Roboto Condensed', sans-serif; color: white;
             border-radius: 10px; overflow: hidden; display: flex; flex-direction: column;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8); border: 4px solid rgba(255,255,255,0.2);
             background: #1a1a1a; box-sizing: border-box; text-align: left;
+            /* La bordure et l'ombre seront injectées en JavaScript pour aider html2canvas ! */
+            border: 4px solid white; 
         }
 
+        /* --- BARRE DU HAUT --- */
         .card-header {
             height: 40px; display: flex; justify-content: space-between; align-items: center;
             padding: 0 10px; background: rgba(0,0,0,0.5); font-family: 'Bebas Neue', sans-serif;
-            border-bottom: 2px solid rgba(255,255,255,0.1); z-index: 5;
+            border-bottom: 2px solid rgba(255,255,255,0.1); z-index: 5; position: relative;
         }
         .rarity-badge { padding: 2px 10px; border-radius: 4px; font-size: 18px; letter-spacing: 1px; }
-        .server-logo { max-height: 24px; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.8)); }
+        .server-logo { max-height: 24px; }
 
+        /* --- L'IMAGE DU JOUEUR --- */
         .avatar-container {
             flex: 1; position: relative; overflow: hidden; background-color: black;
-            border-bottom: 4px solid rgba(255,255,255,0.1);
-            background-size: cover; background-position: center top; background-repeat: no-repeat;
-            z-index: 4;
+            border-bottom: 4px solid rgba(255,255,255,0.1); z-index: 4;
+        }
+        /* On utilise object-fit au lieu de background pour éviter la déformation html2canvas */
+        #modal-img {
+            width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
         }
 
+        /* --- LE TEXTE NÉON --- */
         .card-body { padding: 15px; text-align: center; z-index: 5; position: relative; background: transparent; }
-        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin: 0; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .player-role { font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 5px; margin-bottom: 0px; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin: 0; letter-spacing: 1px; text-transform: uppercase; }
+        .player-role { font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 5px; margin-bottom: 0px; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; }
 
+        /* --- LE FOOTER --- */
         .card-footer {
             height: 30px; display: flex; justify-content: center; align-items: center;
             background: rgba(0,0,0,0.5); font-size: 12px; color: rgba(255,255,255,0.3);
-            border-top: 1px solid rgba(255,255,255,0.1); z-index: 5;
+            border-top: 1px solid rgba(255,255,255,0.1); z-index: 5; position: relative;
         }
-
-        /* --- STYLES DES RARETÉS DU WIDGET --- */
-        .full-card.commune { border-color: #555; background: linear-gradient(135deg, #2b2b2b 0%, #111 100%); }
-        .full-card.commune .rarity-badge { background-color: #555; color: white; }
-        .full-card.commune #modal-title { color: #eee; }
-        .full-card.commune .holographic-glare { display: none; }
-
-        .full-card.peu-commun { border-color: #2ecc71; background: linear-gradient(135deg, #0b2e13 0%, #000 100%); box-shadow: 0 0 10px rgba(46, 204, 113, 0.4); }
-        .full-card.peu-commun .rarity-badge { background-color: #2ecc71; color: black; }
-        .full-card.peu-commun #modal-title { color: white; text-shadow: 0 0 8px #2ecc71; }
-        .full-card.peu-commun .holographic-glare { display: none; }
-
-        .full-card.rare { border-color: #00d2ff; background: linear-gradient(135deg, #001f3f 0%, #000 100%); box-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
-        .full-card.rare .rarity-badge { background-color: #00d2ff; color: black; }
-        .full-card.rare #modal-title { color: white; text-shadow: 0 0 10px #00d2ff; }
-
-        .full-card.tres-rare { border-color: #9b59b6; background: linear-gradient(135deg, #2b003b 0%, #000 100%); box-shadow: 0 0 20px rgba(155, 89, 182, 0.6); }
-        .full-card.tres-rare .rarity-badge { background-color: #9b59b6; color: white; }
-        .full-card.tres-rare #modal-title { color: white; text-shadow: 0 0 12px #9b59b6; }
-
-        .full-card.legendaire { border-color: #ffd700; background: linear-gradient(135deg, #4b3621 0%, #000 100%); box-shadow: 0 0 25px rgba(255, 215, 0, 0.7); }
-        .full-card.legendaire .rarity-badge { background-color: #ffd700; color: black; }
-        .full-card.legendaire #modal-title { color: #ffd700; text-shadow: 0 0 15px #ffd700; }
-
-        .full-card.mythique { border-color: #ff0055; background: linear-gradient(135deg, #3b0000 0%, #000 100%); box-shadow: 0 0 35px rgba(255, 0, 85, 0.9); }
-        .full-card.mythique .rarity-badge { background-color: #ff0055; color: white; text-shadow: 0 0 5px white; }
-        .full-card.mythique #modal-title { color: #ffb3c6; text-shadow: 0 0 20px #ff0055; }
 
         /* REFLETS HOLOGRAPHIQUES DU WIDGET */
         .holographic-glare {
@@ -137,10 +117,10 @@
             background: linear-gradient(125deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.3) 40%, rgba(255,255,255,0) 50%);
             pointer-events: none; z-index: 10;
         }
-        .full-card.rare .holographic-glare { animation: holo 3s infinite linear; }
-        .full-card.tres-rare .holographic-glare { animation: holo 2.5s infinite linear; opacity: 0.4;}
-        .full-card.legendaire .holographic-glare { animation: holo 2s infinite linear; opacity: 0.6; }
-        .full-card.mythique .holographic-glare { animation: holo 1.2s infinite linear; opacity: 0.8; }
+        .holo-rare { animation: holo 3s infinite linear; }
+        .holo-tres-rare { animation: holo 2.5s infinite linear; opacity: 0.4;}
+        .holo-legendaire { animation: holo 2s infinite linear; opacity: 0.6; }
+        .holo-mythique { animation: holo 1.2s infinite linear; opacity: 0.8; }
 
         @keyframes holo { 
             0% { transform: translateX(-150%) skewX(-15deg); } 
@@ -150,14 +130,12 @@
 </head>
 <body>
 
-<!-- ÉCRAN DE CONNEXION -->
 <div id="login-container">
     <h1>Ton Classeur de Cartes</h1>
     <p>Connecte-toi avec Twitch pour voir ta collection.</p>
     <button class="twitch-btn" onclick="loginWithTwitch()">Connecter avec Twitch</button>
 </div>
 
-<!-- ÉCRAN DU CLASSEUR -->
 <div id="catalogue-container">
     <div class="cat-header">
         <div class="cat-header-left">
@@ -184,21 +162,25 @@
     <div class="catalogue-grid" id="catalogue-grid"></div>
 </div>
 
-<!-- FENÊTRE D'AGRANDISSEMENT (DESIGN DU WIDGET OFFICIEL) -->
+<!-- FENÊTRE D'AGRANDISSEMENT (ROBUSTE POUR LE TÉLÉCHARGEMENT) -->
 <div id="card-modal" class="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeModal(event)">&times;</span>
         
         <div class="full-card-container" id="capture-zone">
             <div id="full-card-render" class="full-card commune">
-                <div class="holographic-glare"></div>
+                
+                <div class="holographic-glare" id="modal-holo"></div>
                 
                 <div class="card-header">
                     <span class="rarity-badge" id="modal-rarity-badge">COMMUNE</span>
                     <img class="server-logo" src="https://cdn.streamelements.com/uploads/01m05rz3p7m3rrgx2b1j56zgsc.webp" alt="Vibe Logo" crossorigin="anonymous">
                 </div>
                 
-                <div class="avatar-container" id="modal-img"></div>
+                <!-- BALISE IMG POUR ÉVITER LA DÉFORMATION -->
+                <div class="avatar-container">
+                    <img id="modal-img" src="" crossorigin="anonymous">
+                </div>
                 
                 <div class="card-body">
                     <h2 id="modal-title">Nom du Joueur</h2>
@@ -208,6 +190,7 @@
                 <div class="card-footer">
                     <span id="modal-footer-info">#000 | Tirée par XYZ</span>
                 </div>
+
             </div>
         </div>
         
@@ -314,19 +297,9 @@
         }
     }
 
-    // ==========================================
-    // 📇 RÉCUPÉRATION DES PSEUDOS DEPUIS GOOGLE SHEETS
-    // ==========================================
     function fetchViewersList() {
         let url = `${API_URL}?action=getViewers&nocache=${new Date().getTime()}`;
-        fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            if(Array.isArray(data)) {
-                knownViewers = data;
-            }
-        })
-        .catch(err => console.error("Erreur de chargement des viewers", err));
+        fetch(url).then(res => res.json()).then(data => { if(Array.isArray(data)) knownViewers = data; });
     }
 
     // ==========================================
@@ -336,20 +309,14 @@
     function showSuggestions(val) {
         const list = document.getElementById('autocomplete-list');
         list.innerHTML = '';
-        if (!val) {
-            list.style.display = 'none';
-            return;
-        }
-        
+        if (!val) { list.style.display = 'none'; return; }
         const matches = knownViewers.filter(v => v.toLowerCase().startsWith(val.toLowerCase()));
-        
         if (matches.length > 0) {
             list.style.display = 'flex';
             matches.forEach(match => {
                 const div = document.createElement('div');
                 div.className = 'autocomplete-item';
                 div.innerHTML = `<strong>${match.substring(0, val.length)}</strong>${match.substring(val.length)}`;
-                
                 div.onclick = function() {
                     document.getElementById('search-input').value = match;
                     list.style.display = 'none';
@@ -396,7 +363,7 @@
             document.getElementById('message-box').style.display = "none";
             afficherGrille(cardCounts);
         }).catch(err => {
-            document.getElementById('message-box').innerText = "Erreur lors du chargement de la collection.";
+            document.getElementById('message-box').innerText = "Erreur lors du chargement.";
         });
     }
 
@@ -437,25 +404,59 @@
     }
 
     // ==========================================
-    // 🔍 SYSTÈME D'AGRANDISSEMENT ET TÉLÉCHARGEMENT HD (COPIE WIDGET)
+    // 🔍 SYSTÈME D'AGRANDISSEMENT ET TÉLÉCHARGEMENT (ANTI-BUG HTML2CANVAS)
     // ==========================================
 
     function openModal(card) {
-        // Appliquer la rareté sur le fond pour les couleurs, ombres et reflets !
-        document.getElementById('full-card-render').className = `full-card ${card.rarityClass}`;
-        
-        // Charger l'image en background sans la déformer
-        const imageUrl = card.image + '?nocache=' + new Date().getTime();
-        document.getElementById('modal-img').style.backgroundImage = `url('${imageUrl}')`;
-        
-        document.getElementById('modal-title').innerText = card.name;
-        document.getElementById('modal-role').innerText = card.roleName;
-        // La couleur de la police du rôle sera injectée directement depuis les données
-        document.getElementById('modal-role').style.color = card.roleColor || 'white';
-        
-        document.getElementById('modal-rarity-badge').innerText = card.rarityLabel;
-        document.getElementById('modal-footer-info').innerText = `#${card.id} | Tirée par ${currentViewerName}`;
+        // Définition des couleurs exactes par rareté pour aider l'outil photo
+        let rColor, bgGradient;
+        switch(card.rarityClass) {
+            case 'commune': rColor = '#555555'; bgGradient = 'linear-gradient(135deg, #2b2b2b 0%, #111 100%)'; break;
+            case 'peu-commun': rColor = '#2ecc71'; bgGradient = 'linear-gradient(135deg, #0b2e13 0%, #000 100%)'; break;
+            case 'rare': rColor = '#00d2ff'; bgGradient = 'linear-gradient(135deg, #001f3f 0%, #000 100%)'; break;
+            case 'tres-rare': rColor = '#9b59b6'; bgGradient = 'linear-gradient(135deg, #2b003b 0%, #000 100%)'; break;
+            case 'legendaire': rColor = '#ffd700'; bgGradient = 'linear-gradient(135deg, #4b3621 0%, #000 100%)'; break;
+            case 'mythique': rColor = '#ff0055'; bgGradient = 'linear-gradient(135deg, #3b0000 0%, #000 100%)'; break;
+        }
 
+        const renderDiv = document.getElementById('full-card-render');
+        const titleEl = document.getElementById('modal-title');
+        
+        // On injecte toutes les couleurs en Javascript "dur"
+        renderDiv.style.borderColor = rColor;
+        renderDiv.style.background = bgGradient;
+        renderDiv.style.boxShadow = `0 15px 35px rgba(0,0,0,0.8), 0 0 20px ${rColor}`;
+        
+        document.getElementById('modal-rarity-badge').style.backgroundColor = rColor;
+        document.getElementById('modal-rarity-badge').style.color = (card.rarityClass === 'peu-commun' || card.rarityClass === 'legendaire' || card.rarityClass === 'rare') ? 'black' : 'white';
+        
+        titleEl.innerText = card.name;
+        
+        // Couleurs des lueurs néon selon le widget !
+        if(card.rarityClass === 'mythique') {
+            titleEl.style.color = '#ffb3c6';
+            titleEl.style.textShadow = '0 0 20px #ff0055';
+        } else if (card.rarityClass === 'legendaire') {
+            titleEl.style.color = '#ffd700';
+            titleEl.style.textShadow = '0 0 15px #ffd700';
+        } else if (card.rarityClass === 'commune') {
+            titleEl.style.color = '#eee';
+            titleEl.style.textShadow = 'none';
+        } else {
+            titleEl.style.color = 'white';
+            titleEl.style.textShadow = `0 0 10px ${rColor}`;
+        }
+
+        document.getElementById('modal-role').innerText = card.roleName;
+
+        // Image avec ajout anti-cache
+        document.getElementById('modal-img').src = card.image + '?nocache=' + new Date().getTime();
+        
+        // Gestion de l'hologramme
+        const holoEl = document.getElementById('modal-holo');
+        holoEl.className = `holographic-glare holo-${card.rarityClass}`;
+        
+        document.getElementById('modal-footer-info').innerText = `#${card.id} | Tirée par ${currentViewerName}`;
         document.getElementById('card-modal').style.display = 'flex';
     }
 
@@ -467,14 +468,20 @@
         const cardName = document.getElementById('modal-title').innerText;
         const btn = document.getElementById('download-btn');
         const captureZone = document.getElementById('capture-zone');
+        const holoEl = document.getElementById('modal-holo');
         
         btn.innerText = "📸 Création de la carte...";
+        
+        // ⚠️ Astuce Ultime : On met l'hologramme en pause pendant la photo sinon ça bug !
+        if(holoEl) holoEl.style.animation = 'none';
 
         html2canvas(captureZone, {
             useCORS: true,
             backgroundColor: null, 
-            scale: 2 // Très haute définition pour la collection
+            scale: 2 // Très haute définition
         }).then(canvas => {
+            if(holoEl) holoEl.style.animation = ''; // On remet l'animation
+
             const dataURL = canvas.toDataURL("image/png");
             const a = document.createElement("a");
             a.href = dataURL;
@@ -486,6 +493,7 @@
             btn.innerText = "✅ Carte Téléchargée !";
             setTimeout(() => { btn.innerText = "💾 Télécharger la Carte"; }, 2000);
         }).catch(err => {
+            if(holoEl) holoEl.style.animation = '';
             alert("Erreur lors de la création de la carte.");
             btn.innerText = "💾 Télécharger la Carte";
         });
