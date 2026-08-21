@@ -51,32 +51,53 @@
         .mini-count { position: absolute; top: 4px; right: 4px; background: #e74c3c; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 14px; padding: 2px 6px; border-radius: 20px; border: 1px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.7); z-index: 10; letter-spacing: 1px; }
         .mini-card.locked .mini-count { display: none; }
 
-        /* --- MODAL ET GRANDE CARTE HD --- */
+        /* --- MODAL ET GRANDE CARTE HD (STYLE WIDGET) --- */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-content { text-align: center; position: relative; animation: zoomIn 0.3s ease; }
+        .modal-content { text-align: center; position: relative; animation: zoomIn 0.3s ease; display: flex; flex-direction: column; align-items: center; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         
-        .close-modal { position: absolute; top: -20px; right: -50px; background: #e74c3c; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 28px; font-weight: bold; line-height: 40px; cursor: pointer; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.2s; z-index: 100; }
+        .close-modal { position: absolute; top: -15px; right: -40px; background: #e74c3c; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 28px; font-weight: bold; line-height: 40px; cursor: pointer; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.2s; z-index: 100; text-align: center; }
         .close-modal:hover { background: #c0392b; transform: scale(1.1); }
         #download-btn { background-color: #2ecc71; color: white; padding: 12px 30px; border-radius: 8px; font-size: 20px; font-weight: bold; border: none; cursor: pointer; transition: 0.2s; font-family: 'Roboto Condensed', sans-serif; margin-top: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         #download-btn:hover { background-color: #27ae60; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4); }
 
-        /* --- LE DESIGN DE LA VRAIE CARTE --- */
-        .full-card-container { padding: 10px; background: transparent; display: inline-block; }
-        .full-card { width: 320px; height: 450px; background: #111; border-radius: 15px; position: relative; border: 6px solid #fff; box-shadow: 0 10px 40px rgba(0,0,0,0.8); display: flex; flex-direction: column; overflow: hidden; }
-        .full-card .card-role { text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 24px; padding: 8px; background: rgba(0,0,0,0.7); color: white; border-bottom: 3px solid; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .full-card .card-image { flex: 1; width: 100%; object-fit: cover; background: #222; }
-        .full-card .card-footer { background: rgba(0,0,0,0.9); padding: 15px 10px; text-align: center; border-top: 3px solid; }
-        .full-card .card-name { font-family: 'Bebas Neue', sans-serif; font-size: 34px; letter-spacing: 2px; color: white; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-        .full-card .card-rarity { font-size: 16px; font-weight: bold; letter-spacing: 1px; }
+        /* --- LE NOUVEAU DESIGN DE LA VRAIE CARTE (Pleine image) --- */
+        .full-card-container { padding: 15px; background: transparent; display: inline-block; }
+        .full-card { 
+            width: 320px; height: 450px; 
+            border-radius: 16px; 
+            position: relative; 
+            border: 4px solid #fff; 
+            background: #111;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); 
+            overflow: hidden; 
+        }
+        
+        /* L'image prend toute la carte */
+        .full-card .card-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+        
+        /* Le fond sombre dégradé en bas pour lire le texte */
+        .full-card .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%); z-index: 2; }
+        
+        /* Le badge du Rôle en haut */
+        .full-card .card-role { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); padding: 5px 20px; border-radius: 25px; border: 2px solid white; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; z-index: 3; text-shadow: 0 2px 4px rgba(0,0,0,1); white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        
+        /* Le conteneur du texte en bas */
+        .full-card .card-content { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 15px; z-index: 3; text-align: center; box-sizing: border-box; }
+        
+        /* Le Nom */
+        .full-card .card-name { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 2px; color: white; margin: 0; line-height: 1.1; text-shadow: 0 2px 6px rgba(0,0,0,1); }
+        
+        /* La Rareté */
+        .full-card .card-rarity { font-family: 'Roboto Condensed', sans-serif; font-size: 18px; font-weight: bold; letter-spacing: 2px; margin-top: 5px; text-shadow: 0 2px 4px rgba(0,0,0,1); }
 
-        /* Couleurs des bordures de la carte HD */
-        .full-card.commune { border-color: #555; } .full-card.commune .card-role, .full-card.commune .card-footer { border-color: #555; }
-        .full-card.peu-commun { border-color: #2ecc71; } .full-card.peu-commun .card-role, .full-card.peu-commun .card-footer { border-color: #2ecc71; }
-        .full-card.rare { border-color: #00d2ff; } .full-card.rare .card-role, .full-card.rare .card-footer { border-color: #00d2ff; }
-        .full-card.tres-rare { border-color: #9b59b6; } .full-card.tres-rare .card-role, .full-card.tres-rare .card-footer { border-color: #9b59b6; }
-        .full-card.legendaire { border-color: #ffd700; box-shadow: 0 0 30px rgba(255,215,0,0.6); } .full-card.legendaire .card-role, .full-card.legendaire .card-footer { border-color: #ffd700; }
-        .full-card.mythique { border-color: #ff0055; box-shadow: 0 0 30px rgba(255,0,85,0.7); } .full-card.mythique .card-role, .full-card.mythique .card-footer { border-color: #ff0055; }
+        /* Couleurs et Lueurs selon la rareté */
+        .full-card.commune { border-color: #a0a0a0; box-shadow: 0 0 15px rgba(160,160,160,0.5); } 
+        .full-card.peu-commun { border-color: #2ecc71; box-shadow: 0 0 20px rgba(46,204,113,0.6); } 
+        .full-card.rare { border-color: #00d2ff; box-shadow: 0 0 25px rgba(0,210,255,0.7); } 
+        .full-card.tres-rare { border-color: #9b59b6; box-shadow: 0 0 25px rgba(155,89,182,0.7); } 
+        .full-card.legendaire { border-color: #ffd700; box-shadow: 0 0 35px rgba(255,215,0,0.8); } 
+        .full-card.mythique { border-color: #ff0055; box-shadow: 0 0 45px rgba(255,0,85,0.9); } 
     </style>
 </head>
 <body>
@@ -119,18 +140,19 @@
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeModal(event)">&times;</span>
         
-        <!-- C'est ce bloc HTML qui va être pris en photo ! -->
+        <!-- C'est ce bloc HTML exact qui sera pris en photo HD -->
         <div class="full-card-container" id="capture-zone">
             <div id="full-card-render" class="full-card commune">
-                <div class="card-role" id="modal-role">Role</div>
                 <img class="card-image" id="modal-img" src="" crossorigin="anonymous">
-                <div class="card-footer">
+                <div class="card-overlay"></div>
+                <div class="card-role" id="modal-role">Role</div>
+                <div class="card-content">
                     <div class="card-name" id="modal-title">Nom de la carte</div>
                     <div class="card-rarity" id="modal-rarity">RARETÉ</div>
                 </div>
             </div>
         </div>
-        <br>
+        
         <button id="download-btn" onclick="downloadCard()">💾 Télécharger la Carte</button>
     </div>
 </div>
@@ -167,7 +189,6 @@
         { "id": "VIBE-C019", "name": "Wayne Coleman", "roleName": "LSMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0e6pq1ev54as4p33ssh7zsa.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C020", "name": "Jake Chevalier", "roleName": "BCSO", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0eapp11fvdp8s8crwhq2fm8.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-C021", "name": "Vesper Storms", "roleName": "The Shadow", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0fvv5qyrjvn3abn04rtjnwq.webp", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
-        { "id": "VIBE-C094", "name": "t", "roleName": "Civil", "roleColor": "#fefefe", "weight": 20, "rarityClass": "commune", "rarityLabel": "COMMUNE" },
         { "id": "VIBE-PC001", "name": "Hank Callahan", "roleName": "Sombra Nochnaya", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0ane1wcvzpc3jyba1h2was3.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC002", "name": "Rosie Price", "roleName": "LSMS", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0e5hgcq97y9bv1hvjg30egq.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
         { "id": "VIBE-PC003", "name": "Lawrence \"Low\" Davis", "roleName": "Petit Mains", "roleColor": "#fefefe", "image": "https://cdn.streamelements.com/uploads/01m0e6et5k40xyg34axemz46t3.webp", "weight": 10, "rarityClass": "peu-commun", "rarityLabel": "PEU COMMUN" },
@@ -284,7 +305,6 @@
             
             if(isUnlocked) {
                 unlockedTotal++;
-                // On envoie toutes les infos de la carte à la fenêtre d'agrandissement !
                 cardDiv.onclick = () => openModal(card);
             }
 
@@ -314,7 +334,7 @@
 
     function getRarityColor(cls) {
         switch(cls) {
-            case 'commune': return '#ccc';
+            case 'commune': return '#a0a0a0';
             case 'peu-commun': return '#2ecc71';
             case 'rare': return '#00d2ff';
             case 'tres-rare': return '#9b59b6';
@@ -325,20 +345,27 @@
     }
 
     function openModal(card) {
-        // On modifie l'HTML de la fenêtre pour qu'il prenne le design de la carte !
+        // Applique la bonne couleur et lueur au conteneur principal
         document.getElementById('full-card-render').className = `full-card ${card.rarityClass}`;
         
-        // Ajout d'un petit timestamp pour éviter les bugs de cache lors du téléchargement
+        // Applique l'image
         document.getElementById('modal-img').src = card.image + '?nocache=' + new Date().getTime(); 
         
+        // Applique le nom
         document.getElementById('modal-title').innerText = card.name;
         
-        document.getElementById('modal-role').innerText = card.roleName;
-        document.getElementById('modal-role').style.color = card.roleColor || 'white';
+        // Applique le rôle (avec la couleur de la bordure du rôle)
+        const roleEl = document.getElementById('modal-role');
+        roleEl.innerText = card.roleName;
+        roleEl.style.borderColor = card.roleColor || 'white';
+        roleEl.style.color = card.roleColor || 'white';
         
-        document.getElementById('modal-rarity').innerText = card.rarityLabel;
-        document.getElementById('modal-rarity').style.color = getRarityColor(card.rarityClass);
+        // Applique la rareté (avec sa couleur)
+        const rarityEl = document.getElementById('modal-rarity');
+        rarityEl.innerText = card.rarityLabel;
+        rarityEl.style.color = getRarityColor(card.rarityClass);
 
+        // Affiche la fenêtre
         document.getElementById('card-modal').style.display = 'flex';
     }
 
@@ -353,11 +380,11 @@
         
         btn.innerText = "📸 Création de la carte...";
 
-        // L'outil magique prend une "capture d'écran" du bloc HTML !
+        // html2canvas "prend en photo" le bloc HTML pour le transformer en PNG
         html2canvas(captureZone, {
-            useCORS: true,           // Autorise la lecture de l'image externe
-            backgroundColor: null,   // Garde la transparence autour de la carte
-            scale: 2                 // Augmente la qualité (Haute Définition)
+            useCORS: true,
+            backgroundColor: null, 
+            scale: 2 // Augmente la résolution
         }).then(canvas => {
             const dataURL = canvas.toDataURL("image/png");
 
