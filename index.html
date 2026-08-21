@@ -6,7 +6,7 @@
     <title>Classeur de Cartes Twitch</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- LE NOUVEAU MOTEUR DE CAPTURE BEAUCOUP PLUS PUISSANT -->
+    <!-- LE NOUVEAU MOTEUR DE CAPTURE -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 
     <style>
@@ -68,7 +68,7 @@
         #download-btn:hover { background-color: #27ae60; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4); }
 
         /* ======================================================= */
-        /* --- DESIGN HD DE LA CARTE (HTML-TO-IMAGE) ---           */
+        /* --- DESIGN HD DE LA CARTE ---                           */
         /* ======================================================= */
         .full-card-container { padding: 15px; background: transparent; display: inline-block; }
         
@@ -98,32 +98,15 @@
             width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
         }
 
-        /* --- LE TEXTE NÉON : MODIFIÉ POUR ÉVITER LE CHEVAUCHEMENT --- */
         .card-body { 
-            position: absolute; top: 305px; left: 0; width: 100%; height: 115px; /* Box fixe */
-            padding: 5px 15px; /* Padding réduit en haut et en bas */
-            z-index: 5; background: transparent; box-sizing: border-box;
-            /* Flexbox pour toujours centrer le nom et le rôle parfaitement dans l'espace dispo : */
+            position: absolute; top: 305px; left: 0; width: 100%; height: 115px;
+            padding: 5px 15px; z-index: 5; background: transparent; box-sizing: border-box;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
         
-        #modal-title { 
-            font-family: 'Bebas Neue', sans-serif; 
-            font-size: 30px; /* Réduit pour mieux faire tenir les longs noms */
-            line-height: 1; /* Resserre les noms sur 2 lignes */
-            margin: 0; text-transform: uppercase; letter-spacing: 2px; 
-            text-align: center;
-        }
-        
-        .player-role { 
-            font-size: 14px; /* Légèrement réduit */
-            font-weight: bold; text-transform: uppercase; 
-            margin-top: 4px; margin-bottom: 0px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; letter-spacing: 1px;
-            text-align: center;
-        }
+        #modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; line-height: 1; margin: 0; text-transform: uppercase; letter-spacing: 2px; text-align: center; }
+        .player-role { font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 4px; margin-bottom: 0px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); color: white; letter-spacing: 1px; text-align: center; }
 
-        /* --- LE FOOTER --- */
         .card-footer {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 30px; 
             display: flex; justify-content: center; align-items: center; text-align: center;
@@ -132,12 +115,16 @@
             letter-spacing: 0.5px;
         }
 
-        /* REFLETS HOLOGRAPHIQUES DU WIDGET */
+        /* --- REFLETS HOLOGRAPHIQUES CORRIGÉS --- */
         .holographic-glare {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(125deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.3) 40%, rgba(255,255,255,0) 50%);
             pointer-events: none; z-index: 10;
         }
+        
+        /* 🚨 Ajout pour désactiver la bande blanche sur commune et peu-commun */
+        .holo-commune, .holo-peu-commun { display: none !important; }
+        
         .holo-rare { animation: holo 3s infinite linear; }
         .holo-tres-rare { animation: holo 2.5s infinite linear; opacity: 0.4;}
         .holo-legendaire { animation: holo 2s infinite linear; opacity: 0.6; }
@@ -501,7 +488,10 @@
         
         btn.innerText = "📸 Création de la carte...";
         
-        if(holoEl) holoEl.style.display = 'none';
+        // On vérifie si l'effet holo est actif
+        const hasHolo = holoEl && !holoEl.className.includes('commune') && !holoEl.className.includes('peu-commun');
+        
+        if(hasHolo) holoEl.style.display = 'none';
 
         setTimeout(() => {
             htmlToImage.toPng(captureZone, {
@@ -509,7 +499,7 @@
                 backgroundColor: 'rgba(0,0,0,0)' 
             })
             .then(function (dataURL) {
-                if(holoEl) holoEl.style.display = 'block';
+                if(hasHolo) holoEl.style.display = 'block';
 
                 const a = document.createElement("a");
                 a.href = dataURL;
@@ -522,7 +512,7 @@
                 setTimeout(() => { btn.innerText = "💾 Télécharger la Carte"; }, 2000);
             })
             .catch(function (error) {
-                if(holoEl) holoEl.style.display = 'block';
+                if(hasHolo) holoEl.style.display = 'block';
                 alert("Erreur lors de la création de la carte.");
                 console.error("Erreur html-to-image:", error);
                 btn.innerText = "💾 Télécharger la Carte";
