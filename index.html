@@ -256,7 +256,7 @@
     let knownViewers = [];
     let currentOpenCard = null;
     let currentOpenCount = 0;
-    let currentOpenIsGold = false; // Ajout pour suivre l'état de la carte (Or ou Classique)
+    let currentOpenIsGold = false; 
     let selectedShowcase = [];
     
     let currentProfileData = { inventory: {}, economy: { vibePoints: 0 }, boostCard: null };
@@ -494,7 +494,6 @@
         let unlockedTotal = 0;
 
         allCards.forEach(card => {
-            // CARTE NORMALE
             const count = inventory[card.id] || 0;
             const isUnlocked = count > 0;
             const isBoosted = (card.id === boostCardId);
@@ -533,7 +532,6 @@
             
             grid.appendChild(cardDiv);
 
-            // CARTE ÉDITION OR (si possédée)
             const goldId = card.id + "_GOLD";
             const goldCount = inventory[goldId] || 0;
             if (goldCount > 0) {
@@ -583,8 +581,6 @@
         
         const isBoosted = (currentOpenCard.id === currentProfileData.boostCard);
         let baseReward = VP_RECYCLE_VALUES[currentOpenCard.rarityClass];
-        
-        // Une carte OR vaut 10x plus cher au recyclage !
         if (currentOpenIsGold) baseReward *= 10;
         else if (isBoosted) baseReward *= 2;
         
@@ -604,14 +600,12 @@
 
         boostTag.style.display = isBoosted ? 'block' : 'none';
 
-        // Bouton de forge (seulement si non OR, possédé x5, et c'est notre carte)
         if (isOwner && !isGold && count >= 5) {
             forgeBtn.style.display = 'block';
         } else {
             forgeBtn.style.display = 'none';
         }
 
-        // Contrôles de recyclage
         if (isOwner && count > 1) {
             recycleControls.style.display = 'flex';
             document.getElementById('recycle-btn').disabled = false;
@@ -625,12 +619,11 @@
             recycleControls.style.display = 'none';
         }
 
+        let rColor, bgGradient;
         const renderDiv = document.getElementById('full-card-render');
         const titleEl = document.getElementById('modal-title');
         const badgeEl = document.getElementById('modal-rarity-badge');
 
-        let rColor, bgGradient;
-        
         if (isGold) {
             rColor = '#ffd700';
             bgGradient = 'linear-gradient(135deg, #4b3621 0%, #000 100%)';
@@ -667,7 +660,7 @@
         document.getElementById('modal-img').src = card.image + '?nocache=' + new Date().getTime();
         
         const holoEl = document.getElementById('modal-holo');
-        holoEl.className = `holographic-glare holo-${isGold ? 'mythique' : card.rarityClass}`; // Or brille beaucoup !
+        holoEl.className = `holographic-glare holo-${isGold ? 'mythique' : card.rarityClass}`;
         
         let safeViewerName = currentSearchedViewer || "Inconnu";
         let displayId = isGold ? card.id + "_GOLD" : card.id;
@@ -694,6 +687,8 @@
             .then(res => {
                 if(res.success) {
                     alert("✨ " + res.message);
+                    btn.innerText = "🔨 Forger en OR (Coût: 5 cartes)";
+                    btn.disabled = false;
                     closeModal();
                     fetchCollection(currentViewerName);
                 } else {
@@ -733,6 +728,7 @@
         fetch(url).then(r => r.json()).then(res => {
             if(res.success) {
                 alert(`♻️ Succès ! Vous avez recyclé ${qtyToRecycle} carte(s) pour ${totalReward} Vibe Points.`);
+                btn.disabled = false;
                 closeModal();
                 fetchCollection(currentViewerName);
             } else {
