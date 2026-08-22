@@ -817,9 +817,12 @@
             const grid = document.getElementById('showcase-grid');
             grid.innerHTML = '';
             
-            if (Array.isArray(ids) && ids.length > 0) {
+            // On s'assure qu'on ignore les éventuelles valeurs vides
+            let validIds = (Array.isArray(ids) ? ids : []).filter(id => id.trim() !== '');
+
+            if (validIds.length > 0) {
                 container.style.display = 'block';
-                ids.forEach(id => {
+                validIds.forEach(id => {
                     const card = allCards.find(c => c.id === id);
                     if (card) {
                         grid.innerHTML += `
@@ -851,41 +854,52 @@
     function ouvrirGestionVitrine() {
         const modal = document.getElementById('showcase-edit-modal');
         const grid = document.getElementById('showcase-select-grid');
-        grid.innerHTML = '';
+        
+        grid.innerHTML = '<div style="color:#aaa; font-weight:bold; padding:20px;">⏳ Chargement de ta collection...</div>';
+        modal.style.display = 'flex';
         selectedShowcase = [];
 
         fetch(`${API_URL}?action=getShowcase&viewer=${encodeURIComponent(currentViewerName)}&nocache=${new Date().getTime()}`)
-        .then(r => r.json()).then(ids => { selectedShowcase = ids || []; });
+        .then(r => r.json())
+        .then(ids => { 
+            // On filtre les espaces vides fantômes
+            selectedShowcase = (ids || []).filter(id => id.trim() !== '');
+            
+            grid.innerHTML = ''; 
 
-        allCards.forEach(card => {
-            if (currentProfileData.inventory[card.id] > 0) {
-                const isSelected = selectedShowcase.includes(card.id);
-                const div = document.createElement('div');
-                div.className = `mini-card ${card.rarityClass} ${isSelected ? 'daily-boost' : ''}`;
-                div.style.width = "70px"; div.style.height = "100px";
-                div.innerHTML = `
-                    <img src="${card.image}" style="width:100%; height:100%; object-fit:cover;">
-                    ${isSelected ? '<div class="boost-tag">🔥</div>' : ''}
-                `;
-                
-                div.onclick = () => {
-                    if (selectedShowcase.includes(card.id)) {
-                        selectedShowcase = selectedShowcase.filter(id => id !== card.id);
-                        div.classList.remove('daily-boost');
-                        div.querySelector('.boost-tag')?.remove();
-                    } 
-                    else if (selectedShowcase.length < 3) { 
-                        selectedShowcase.push(card.id);
-                        div.classList.add('daily-boost');
-                        div.innerHTML += '<div class="boost-tag">🔥</div>';
-                    } else {
-                        alert("Tu ne peux choisir que 3 cartes au maximum !");
-                    }
-                };
-                grid.appendChild(div);
-            }
+            allCards.forEach(card => {
+                if (currentProfileData.inventory[card.id] > 0) {
+                    const isSelected = selectedShowcase.includes(card.id);
+                    const div = document.createElement('div');
+                    div.className = `mini-card ${card.rarityClass} ${isSelected ? 'daily-boost' : ''}`;
+                    div.style.width = "70px"; div.style.height = "100px";
+                    div.style.cursor = "pointer"; 
+                    div.innerHTML = `
+                        <img src="${card.image}" style="width:100%; height:100%; object-fit:cover;">
+                        ${isSelected ? '<div class="boost-tag">🔥</div>' : ''}
+                    `;
+                    
+                    div.onclick = () => {
+                        if (selectedShowcase.includes(card.id)) {
+                            selectedShowcase = selectedShowcase.filter(id => id !== card.id);
+                            div.classList.remove('daily-boost');
+                            let tag = div.querySelector('.boost-tag');
+                            if(tag) tag.remove();
+                        } 
+                        else if (selectedShowcase.length < 3) { 
+                            selectedShowcase.push(card.id);
+                            div.classList.add('daily-boost');
+                            div.innerHTML += '<div class="boost-tag">🔥</div>';
+                        } else {
+                            alert("Tu as déjà sélectionné 3 cartes ! Retire-en une pour en ajouter une autre.");
+                        }
+                    };
+                    grid.appendChild(div);
+                }
+            });
+        }).catch(() => {
+            grid.innerHTML = '<div style="color:#e74c3c;">Erreur lors du chargement.</div>';
         });
-        modal.style.display = 'flex';
     }
 
     function closeShowcaseEdit() { document.getElementById('showcase-edit-modal').style.display = 'none'; }
