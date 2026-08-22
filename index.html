@@ -154,7 +154,10 @@
 
     <!-- VITRINE DE FIERTÉ -->
     <div id="showcase-container" style="display:none; text-align:center; margin-bottom:30px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3);">
-        <h2 style="font-family:'Bebas Neue'; color:#ffd700; margin:0 0 10px 0; letter-spacing:1px; font-size:24px;">✨ VITRINE DE FIERTÉ ✨</h2>
+        <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <h2 style="font-family:'Bebas Neue'; color:#ffd700; margin:0; letter-spacing:1px; font-size:24px;">✨ VITRINE DE FIERTÉ ✨</h2>
+            <button id="edit-showcase-btn" onclick="ouvrirGestionVitrine()" style="display:none; background-color: #3498db; border:none; padding:4px 10px; border-radius:5px; color:white; cursor:pointer; font-family:'Roboto Condensed'; font-weight:bold; font-size:14px;">✏️ Éditer ma vitrine</button>
+        </div>
         <div id="showcase-grid" style="display:flex; justify-content:center; gap:15px;"></div>
     </div>
 
@@ -417,6 +420,17 @@
 
     function fetchCollection(viewer) {
         document.getElementById('vp-display-container').style.display = 'none';
+        
+        // Afficher ou masquer le bouton d'édition de la vitrine selon si c'est le profil du viewer connecté
+        const editBtn = document.getElementById('edit-showcase-btn');
+        if (editBtn) {
+            if (currentViewerName && currentViewerName.toLowerCase() === viewer.toLowerCase()) {
+                editBtn.style.display = 'inline-block';
+            } else {
+                editBtn.style.display = 'none';
+            }
+        }
+
         fetch(`${API_URL}?action=getProfile&viewer=${encodeURIComponent(viewer)}&nocache=${new Date().getTime()}`)
         .then(r => r.json()).then(data => {
             currentProfileData = data; 
@@ -427,7 +441,7 @@
             }
             afficherGrille(data.inventory, data.boostCard);
             genererBadges(data.inventory);
-            fetchShowcase(viewer); // Charge la vitrine du joueur
+            fetchShowcase(viewer); 
         }).catch(() => { document.getElementById('message-box').innerText = "Erreur lors du chargement."; });
     }
 
@@ -805,7 +819,8 @@
                     }
                 });
             } else {
-                container.style.display = 'none';
+                container.style.display = 'block'; // On affiche le conteneur pour que le bouton d'édition reste visible même si vide
+                grid.innerHTML = '<div style="color:#aaa; font-size:14px; font-style:italic;">Aucune carte épinglée.</div>';
             }
         }).catch(() => {
             document.getElementById('showcase-container').style.display = 'none';
@@ -818,6 +833,25 @@
             let count = currentProfileData.inventory[cardId] || 1;
             let isBoosted = (cardId === currentProfileData.boostCard);
             openModal(card, count, isBoosted);
+        }
+    }
+
+    function ouvrirGestionVitrine() {
+        let ids = prompt("Entre les IDs de tes 3 cartes préférées (ex: VIBE-C001,VIBE-R002,VIBE-L001) :", "");
+        if (ids !== null) {
+            let url = `${API_URL}?action=updateShowcase&viewer=${encodeURIComponent(currentViewerName)}&cardIds=${encodeURIComponent(ids)}&nocache=${new Date().getTime()}`;
+            fetch(url)
+            .then(r => r.json())
+            .then(res => {
+                if(res.success) {
+                    alert("✨ Vitrine mise à jour avec succès !");
+                    fetchShowcase(currentViewerName);
+                } else {
+                    alert("Erreur lors de la mise à jour.");
+                }
+            }).catch(() => {
+                alert("Erreur réseau.");
+            });
         }
     }
     
