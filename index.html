@@ -152,6 +152,12 @@
         <button onclick="ouvrirBoutique()" style="background-color: #e67e22; color: white; margin-left: 10px;">🛒 Boutique</button>
     </div>
 
+    <!-- VITRINE DE FIERTÉ -->
+    <div id="showcase-container" style="display:none; text-align:center; margin-bottom:30px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3);">
+        <h2 style="font-family:'Bebas Neue'; color:#ffd700; margin:0 0 10px 0; letter-spacing:1px; font-size:24px;">✨ VITRINE DE FIERTÉ ✨</h2>
+        <div id="showcase-grid" style="display:flex; justify-content:center; gap:15px;"></div>
+    </div>
+
     <div id="message-box">Chargement de la collection...</div>
     <div class="catalogue-grid" id="catalogue-grid"></div>
 </div>
@@ -421,6 +427,7 @@
             }
             afficherGrille(data.inventory, data.boostCard);
             genererBadges(data.inventory);
+            fetchShowcase(viewer); // Charge la vitrine du joueur
         }).catch(() => { document.getElementById('message-box').innerText = "Erreur lors du chargement."; });
     }
 
@@ -772,6 +779,45 @@
             }).catch(() => {
                 alert("Erreur réseau lors de l'achat.");
             });
+        }
+    }
+
+    // --- SYSTÈME DE VITRINE ---
+    function fetchShowcase(viewer) {
+        fetch(`${API_URL}?action=getShowcase&viewer=${encodeURIComponent(viewer)}&nocache=${new Date().getTime()}`)
+        .then(r => r.json())
+        .then(ids => {
+            const container = document.getElementById('showcase-container');
+            const grid = document.getElementById('showcase-grid');
+            grid.innerHTML = '';
+            
+            if (Array.isArray(ids) && ids.length > 0) {
+                container.style.display = 'block';
+                ids.forEach(id => {
+                    const card = allCards.find(c => c.id === id);
+                    if (card) {
+                        grid.innerHTML += `
+                            <div class="mini-card ${card.rarityClass}" style="cursor: pointer;" onclick="openModalFromShowcase('${card.id}')">
+                                <div class="card-img-wrapper"><img src="${card.image}" style="width:100%; height:100%; object-fit:cover;"></div>
+                                <div class="mini-name">${card.name}</div>
+                            </div>
+                        `;
+                    }
+                });
+            } else {
+                container.style.display = 'none';
+            }
+        }).catch(() => {
+            document.getElementById('showcase-container').style.display = 'none';
+        });
+    }
+
+    function openModalFromShowcase(cardId) {
+        const card = allCards.find(c => c.id === cardId);
+        if (card) {
+            let count = currentProfileData.inventory[cardId] || 1;
+            let isBoosted = (cardId === currentProfileData.boostCard);
+            openModal(card, count, isBoosted);
         }
     }
     
