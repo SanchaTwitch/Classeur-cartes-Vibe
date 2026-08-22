@@ -5,42 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classeur de Cartes Twitch</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
 
     <style>
-        /* [STYLES DE BASE CONSERVÉS] */
         html { min-height: 100%; background-color: #151026; }
         body { margin: 0; padding: 0; min-height: 100vh; background-color: #2b214c; background-image: linear-gradient(135deg, #2b214c 0%, #151026 100%); background-attachment: fixed; background-size: cover; background-repeat: no-repeat; color: white; font-family: 'Roboto Condensed', sans-serif; display: flex; justify-content: center; }
         
         #login-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; width: 100%; }
         #login-container h1 { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 2px; margin-bottom: 10px; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         #login-container p { color: #ccc; margin-bottom: 30px; font-size: 18px; }
-        .twitch-btn { background-color: #9146FF; color: white; padding: 15px 30px; border-radius: 8px; font-size: 20px; font-weight: bold; text-decoration: none; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4); transition: background 0.2s, transform 0.2s; }
-        .twitch-btn:hover { background-color: #772ce8; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(145, 70, 255, 0.6); }
+        .twitch-btn { background-color: #9146FF; color: white; padding: 15px 30px; border-radius: 8px; font-size: 20px; font-weight: bold; text-decoration: none; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4); transition: 0.2s; }
+        .twitch-btn:hover { background-color: #772ce8; transform: translateY(-2px); }
 
         #catalogue-container { width: 100%; max-width: 1000px; padding: 20px; display: none; flex-direction: column; min-height: 100vh; }
         .cat-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px; margin-top: 20px; }
         
-        /* [NOUVEAU : HEADER & BADGES] */
         .cat-header-left { display: flex; flex-direction: column; gap: 5px; }
         .cat-header-left h1 { font-family: 'Bebas Neue', sans-serif; margin: 0; font-size: 42px; letter-spacing: 2px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); line-height: 1; }
         
         #badges-container { display: flex; gap: 10px; margin-top: 5px; min-height: 30px; }
         .badge-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-family: 'Bebas Neue'; border: 2px solid white; cursor: help; position: relative; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        /* Couleurs des badges */
         .badge-commune { background: #555; box-shadow: 0 0 10px #555; }
         .badge-peu-commun { background: #2ecc71; color: black; box-shadow: 0 0 10px #2ecc71; }
         .badge-rare { background: #00d2ff; color: black; box-shadow: 0 0 10px #00d2ff; }
         .badge-tres-rare { background: #9b59b6; box-shadow: 0 0 10px #9b59b6; }
         .badge-legendaire { background: #ffd700; color: black; box-shadow: 0 0 10px #ffd700; }
         .badge-mythique { background: #ff0055; box-shadow: 0 0 15px #ff0055; }
-        
-        /* Tooltip Badges */
         .badge-icon::after { content: attr(data-tooltip); position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: white; font-size: 12px; font-family: 'Roboto Condensed'; padding: 4px 8px; border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.2s; z-index: 50; }
         .badge-icon:hover::after { opacity: 1; bottom: -35px; }
 
-        /* [NOUVEAU : VIBE POINTS] */
         .cat-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
         .cat-progress { font-size: 20px; font-weight: bold; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         .cat-progress span { color: #ffd700; }
@@ -53,7 +46,6 @@
 
         #message-box { text-align: center; font-size: 20px; color: #aaa; margin-top: 50px; }
         
-        /* [NOUVEAU : RECHERCHE] */
         .search-box { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); align-items: flex-start; }
         .search-box input { padding: 10px 15px; font-size: 18px; border-radius: 5px; border: none; background: #222; color: white; font-family: 'Roboto Condensed', sans-serif; width: 250px; outline: none; }
         .search-box input:focus { border: 1px solid #9146FF; }
@@ -81,33 +73,30 @@
         .mini-count { position: absolute; top: -8px; right: -8px; background: #e74c3c; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 16px; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.7); z-index: 10; }
         .mini-card.locked .mini-count { display: none; }
 
-        /* [NOUVEAU : DAILY BOOST] */
         .daily-boost { animation: glowFire 1.5s infinite alternate; border-color: #ff4500 !important; }
-        @keyframes glowFire { 
-            0% { box-shadow: 0 0 5px #ff4500, inset 0 0 5px #ff4500; } 
-            100% { box-shadow: 0 0 20px #ff4500, 0 0 10px #ffea00, inset 0 0 10px #ff4500; } 
-        }
+        @keyframes glowFire { 0% { box-shadow: 0 0 5px #ff4500, inset 0 0 5px #ff4500; } 100% { box-shadow: 0 0 20px #ff4500, 0 0 10px #ffea00, inset 0 0 10px #ff4500; } }
         .boost-tag { position: absolute; top: -10px; left: -10px; background: linear-gradient(45deg, #ff0000, #ff7300); color: white; font-family: 'Bebas Neue'; font-size: 14px; padding: 2px 8px; border-radius: 10px; border: 1px solid #ffd700; transform: rotate(-10deg); box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 15; letter-spacing: 1px; }
 
-        /* MODAL */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-content { text-align: center; position: relative; animation: zoomIn 0.3s ease; display: flex; flex-direction: column; align-items: center; }
         @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .close-modal { position: absolute; top: -15px; right: -40px; background: #e74c3c; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 28px; font-weight: bold; line-height: 40px; cursor: pointer; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.2s; z-index: 100; text-align: center; }
         .close-modal:hover { background: #c0392b; transform: scale(1.1); }
         
-        .modal-buttons { display: flex; gap: 15px; margin-top: 20px; }
+        .modal-buttons { display: flex; gap: 15px; margin-top: 15px; align-items: center; }
         .action-btn { padding: 12px 25px; border-radius: 8px; font-size: 18px; font-weight: bold; border: none; cursor: pointer; transition: 0.2s; font-family: 'Roboto Condensed', sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
         #download-btn { background-color: #2ecc71; color: white; }
         #download-btn:hover { background-color: #27ae60; transform: translateY(-2px); }
         
-        /* [NOUVEAU : BOUTON RECYCLAGE] */
-        #recycle-btn { background-color: #e67e22; color: white; display: none; }
-        #recycle-btn:hover { background-color: #d35400; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(230, 126, 34, 0.4); }
-        #recycle-btn:disabled { background-color: #7f8c8d; cursor: not-allowed; transform: none; box-shadow: none; }
+        /* CONTROLES DE RECYCLAGE */
+        #recycle-controls-wrapper { display: none; flex-direction: column; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 8px; border: 1px solid #e67e22; align-items: center; margin-top: 15px; width: 100%; box-sizing: border-box; }
+        #recycle-controls-wrapper label { font-size: 16px; margin-bottom: 5px; }
+        #recycle-slider { width: 90%; accent-color: #e67e22; cursor: pointer; }
+        #recycle-btn { background-color: #e67e22; color: white; width: 100%; margin-top: 10px; }
+        #recycle-btn:hover { background-color: #d35400; }
+        #recycle-btn:disabled { background-color: #7f8c8d; cursor: not-allowed; }
 
         .full-card-container { padding: 15px; background: transparent; display: inline-block; position: relative; }
-        
         .full-card { width: 300px; height: 450px; position: relative; font-family: 'Roboto Condensed', sans-serif; color: white; border-radius: 10px; overflow: hidden; display: block; background: #1a1a1a; box-sizing: border-box; text-align: left; border: 4px solid white; }
         .card-header { position: absolute; top: 0; left: 0; width: 100%; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; background: rgba(0,0,0,0.5); font-family: 'Bebas Neue', sans-serif; border-bottom: 2px solid rgba(255,255,255,0.1); z-index: 5; box-sizing: border-box; }
         .rarity-badge { padding: 2px 10px; border-radius: 4px; font-size: 18px; letter-spacing: 1px; }
@@ -140,9 +129,7 @@
     <div class="cat-header">
         <div class="cat-header-left">
             <h1 id="titre-joueur">Collection de ...</h1>
-            <div id="badges-container">
-                <!-- Les trophées apparaitront ici -->
-            </div>
+            <div id="badges-container"></div>
         </div>
         <div class="cat-header-right">
             <img src="https://cdn.streamelements.com/uploads/01m05rz3p7m3rrgx2b1j56zgsc.webp" alt="Logo Vibe" id="site-logo">
@@ -173,33 +160,31 @@
         <span class="close-modal" onclick="closeModal(event)">&times;</span>
         
         <div class="full-card-container" id="capture-zone">
-            <!-- Macaron Boost dans le modal -->
             <div id="modal-boost-tag" class="boost-tag" style="display:none; font-size:18px; top:-15px; left:-15px;">🔥 BOOSTER x2</div>
-            
             <div id="full-card-render" class="full-card commune">
                 <div class="holographic-glare" id="modal-holo"></div>
-                
                 <div class="card-header">
                     <span class="rarity-badge" id="modal-rarity-badge">COMMUNE</span>
                     <img class="server-logo" src="https://cdn.streamelements.com/uploads/01m05rz3p7m3rrgx2b1j56zgsc.webp" alt="Vibe Logo" crossorigin="anonymous">
                 </div>
-                
-                <div class="avatar-container">
-                    <img id="modal-img" src="" crossorigin="anonymous">
-                </div>
-                
+                <div class="avatar-container"><img id="modal-img" src="" crossorigin="anonymous"></div>
                 <div class="card-body">
                     <h2 id="modal-title">Nom du Joueur</h2>
                     <div class="player-role" id="modal-role">Rôle</div>
                 </div>
-                
                 <div class="card-footer" id="modal-footer-info"></div>
             </div>
         </div>
         
-        <div class="modal-buttons">
-            <button id="download-btn" class="action-btn" onclick="downloadCard()">💾 Télécharger</button>
-            <button id="recycle-btn" class="action-btn" onclick="recyclerCarte()">♻️ Recycler (+0 VP)</button>
+        <div class="modal-buttons" style="flex-direction: column;">
+            <button id="download-btn" class="action-btn" onclick="downloadCard()">💾 Télécharger la carte</button>
+            
+            <!-- BLOC RECYCLAGE DYNAMIQUE -->
+            <div id="recycle-controls-wrapper">
+                <label>Quantité à recycler : <span id="recycle-qty-display" style="color:#ffd700; font-weight:bold;">1</span></label>
+                <input type="range" id="recycle-slider" min="1" max="1" value="1" oninput="updateRecycleUI()">
+                <button id="recycle-btn" class="action-btn" onclick="recyclerCarte()">♻️ Recycler</button>
+            </div>
         </div>
     </div>
 </div>
@@ -207,30 +192,19 @@
 <script>
     const TWITCH_CLIENT_ID = "8vko1xrfy8xmdzhccqbl6co4oyblac";
     const REDIRECT_URI = "https://sanchatwitch.github.io/Classeur-cartes-Vibe/"; 
-    // TON LIEN API ACTUALISÉ :
     const API_URL = "https://script.google.com/macros/s/AKfycbyNn4xNV2QffmZEuhPVSPYTT1CPnvpWcL48LuRogG1676MzJGwU9mLQBx5LbjRpGV6eFA/exec";
 
-    let currentViewerName = ""; // L'utilisateur connecté (Toi)
-    let searchedViewer = "";    // Le classeur que l'on regarde
+    let currentViewerName = ""; 
+    let currentSearchedViewer = "";
     let knownViewers = [];
     let currentOpenCard = null;
     let currentOpenCount = 0;
     
-    // Données du profil actuel
-    let currentProfileData = {
-        inventory: {},
-        economy: { vibePoints: 0 },
-        boostCard: null
-    };
+    let currentProfileData = { inventory: {}, economy: { vibePoints: 0 }, boostCard: null };
 
-    // Prix de recyclage de base
     const VP_RECYCLE_VALUES = {
-        "commune": 10,
-        "peu-commun": 30,
-        "rare": 75,
-        "tres-rare": 150,
-        "legendaire": 300,
-        "mythique": 750
+        "commune": 10, "peu-commun": 30, "rare": 75,
+        "tres-rare": 150, "legendaire": 300, "mythique": 750
     };
 
     const allCards = [
@@ -297,7 +271,7 @@
         { "id": "VIBE-R012", "name": "Guet Apens Valente", "roleName": "Piège", "image": "https://cdn.streamelements.com/uploads/01m0jaa44dbpdkp3edsf826g4d.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R013", "name": "Raedwin Kingscroft", "roleName": "BCSO", "image": "https://cdn.streamelements.com/uploads/01m0jabbs0v9rzq34gamgw0x2b.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R014", "name": "Joshua & Dewey", "roleName": "Tricksters", "image": "https://cdn.streamelements.com/uploads/01m0jbax6wx2tvgd8kzq39swra.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
-        { "id": "VIBE-R015", "name": "KB, LJ, Kurtis", "roleName": "Tricksters", "image": "https://cdn.streamelements.com/uploads/01m0jbc9tvszgev7atwtt815sd.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
+        { "id": "VIBE-R015", "name": "KB, MJ, Kurtis", "roleName": "Tricksters", "image": "https://cdn.streamelements.com/uploads/01m0jbc9tvszgev7atwtt815sd.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R016", "name": "Kentaro Mitsuya", "roleName": "WS", "image": "https://cdn.streamelements.com/uploads/01m0jbdbqy5np3q48k42wztjsc.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R017", "name": "Marcus Coley", "roleName": "Tricksters", "image": "https://cdn.streamelements.com/uploads/01m0jbmzmj4z6v3y4amryzbeqf.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
         { "id": "VIBE-R018", "name": "Priam & Marc", "roleName": "Tricksters", "image": "https://cdn.streamelements.com/uploads/01m0jbp4xaw0btn2qrgd30ynfw.webp", "rarityClass": "rare", "rarityLabel": "RARE" },
@@ -325,8 +299,6 @@
     ];
 
     document.getElementById('cat-total').innerText = allCards.length;
-
-    // Calcul du nombre total de cartes par rareté (pour les Badges)
     const requiredForBadge = {};
     allCards.forEach(c => { requiredForBadge[c.rarityClass] = (requiredForBadge[c.rarityClass] || 0) + 1; });
 
@@ -348,20 +320,16 @@
                 currentViewerName = data.data[0].display_name; 
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('catalogue-container').style.display = 'flex';
-                
                 fetchViewersList();
-                // Par défaut, on charge son propre profil
                 currentSearchedViewer = currentViewerName;
                 document.getElementById('titre-joueur').innerText = `Collection de ${currentSearchedViewer.toUpperCase()}`;
                 fetchCollection(currentSearchedViewer);
-            })
-            .catch(err => console.error(err));
+            }).catch(err => console.error(err));
         }
     }
 
     function fetchViewersList() {
-        let url = `${API_URL}?action=getViewers&nocache=${new Date().getTime()}`;
-        fetch(url).then(res => res.json()).then(data => { if(Array.isArray(data)) knownViewers = data; });
+        fetch(`${API_URL}?action=getViewers&nocache=${new Date().getTime()}`).then(r => r.json()).then(d => { if(Array.isArray(d)) knownViewers = d; });
     }
 
     function showSuggestions(val) {
@@ -375,22 +343,13 @@
                 const div = document.createElement('div');
                 div.className = 'autocomplete-item';
                 div.innerHTML = `<strong>${match.substring(0, val.length)}</strong>${match.substring(val.length)}`;
-                div.onclick = function() {
-                    document.getElementById('search-input').value = match;
-                    list.style.display = 'none';
-                    rechercherViewer(); 
-                };
+                div.onclick = function() { document.getElementById('search-input').value = match; list.style.display = 'none'; rechercherViewer(); };
                 list.appendChild(div);
             });
         } else { list.style.display = 'none'; }
     }
 
-    document.addEventListener('click', function(e) {
-        if (e.target.id !== 'search-input') {
-            const list = document.getElementById('autocomplete-list');
-            if(list) list.style.display = 'none';
-        }
-    });
+    document.addEventListener('click', e => { if (e.target.id !== 'search-input') { const l = document.getElementById('autocomplete-list'); if(l) l.style.display = 'none'; } });
     
     function rechercherViewer() {
         const input = document.getElementById('search-input').value.trim();
@@ -398,7 +357,7 @@
             document.getElementById('autocomplete-list').style.display = 'none'; 
             currentSearchedViewer = input; 
             document.getElementById('catalogue-grid').innerHTML = '';
-            document.getElementById('badges-container').innerHTML = ''; // Reset badges
+            document.getElementById('badges-container').innerHTML = ''; 
             document.getElementById('message-box').style.display = "block";
             document.getElementById('message-box').innerText = `Recherche de la collection de ${input}...`;
             document.getElementById('titre-joueur').innerText = `Collection de ${input.toUpperCase()}`;
@@ -406,61 +365,35 @@
         }
     }
 
-    document.getElementById('search-input').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') { rechercherViewer(); }
-    });
+    document.getElementById('search-input').addEventListener('keypress', e => { if (e.key === 'Enter') rechercherViewer(); });
 
     function fetchCollection(viewer) {
-        // ON UTILISE LA NOUVELLE ACTION "getProfile"
-        let url = `${API_URL}?action=getProfile&viewer=${encodeURIComponent(viewer)}&nocache=${new Date().getTime()}`;
-        
-        // Cacher VibePoints par sécurité en attendant la réponse
         document.getElementById('vp-display-container').style.display = 'none';
-
-        fetch(url).then(r => r.json()).then(data => {
+        fetch(`${API_URL}?action=getProfile&viewer=${encodeURIComponent(viewer)}&nocache=${new Date().getTime()}`)
+        .then(r => r.json()).then(data => {
             currentProfileData = data; 
             document.getElementById('message-box').style.display = "none";
-            
-            // Verif de sécurité : Est-ce mon profil ?
-            const isOwner = (currentViewerName.toLowerCase() === viewer.toLowerCase());
-            
-            if (isOwner) {
+            if (currentViewerName.toLowerCase() === viewer.toLowerCase()) {
                 document.getElementById('vp-display-container').style.display = 'flex';
                 document.getElementById('vp-count').innerText = data.economy.vibePoints;
             }
-
             afficherGrille(data.inventory, data.boostCard);
             genererBadges(data.inventory);
-            
-        }).catch(err => {
-            document.getElementById('message-box').innerText = "Erreur lors du chargement.";
-        });
+        }).catch(() => { document.getElementById('message-box').innerText = "Erreur lors du chargement."; });
     }
 
     function genererBadges(inventory) {
         const container = document.getElementById('badges-container');
         container.innerHTML = ''; 
-
-        // Compter combien l'utilisateur a de cartes uniques par rareté
         const userUniqueCounts = {};
         for(let id in inventory) {
             if(inventory[id] > 0) {
                 let cardObj = allCards.find(c => c.id === id);
-                if(cardObj) {
-                    userUniqueCounts[cardObj.rarityClass] = (userUniqueCounts[cardObj.rarityClass] || 0) + 1;
-                }
+                if(cardObj) userUniqueCounts[cardObj.rarityClass] = (userUniqueCounts[cardObj.rarityClass] || 0) + 1;
             }
         }
-
-        // Créer les trophées si 100% complété
-        const icones = {
-            "commune": "🔘", "peu-commun": "❇️", "rare": "🔷", 
-            "tres-rare": "🔮", "legendaire": "👑", "mythique": "👹"
-        };
-        const noms = {
-            "commune": "Communes", "peu-commun": "Peu Communes", "rare": "Rares", 
-            "tres-rare": "Très Rares", "legendaire": "Légendaires", "mythique": "Mythiques"
-        };
+        const icones = { "commune": "🔘", "peu-commun": "❇️", "rare": "🔷", "tres-rare": "🔮", "legendaire": "👑", "mythique": "👹" };
+        const noms = { "commune": "Communes", "peu-commun": "Peu Communes", "rare": "Rares", "tres-rare": "Très Rares", "legendaire": "Légendaires", "mythique": "Mythiques" };
 
         for (let rarity in requiredForBadge) {
             if(userUniqueCounts[rarity] === requiredForBadge[rarity]) {
@@ -500,7 +433,6 @@
 
             const imgWrapper = document.createElement('div');
             imgWrapper.className = "card-img-wrapper";
-            
             const img = document.createElement('img');
             img.src = card.image || ''; 
             imgWrapper.appendChild(img);
@@ -521,26 +453,46 @@
         document.getElementById('cat-count').innerText = unlockedTotal;
     }
 
+    // ACTUALISATION DU PANNEAU DE RECYCLAGE EN TEMPS RÉEL
+    function updateRecycleUI() {
+        if (!currentOpenCard) return;
+        const slider = document.getElementById('recycle-slider');
+        const qtyDisplay = document.getElementById('recycle-qty-display');
+        const btn = document.getElementById('recycle-btn');
+        
+        const qty = parseInt(slider.value, 10);
+        qtyDisplay.innerText = qty;
+        
+        const isBoosted = (currentOpenCard.id === currentProfileData.boostCard);
+        let baseReward = VP_RECYCLE_VALUES[currentOpenCard.rarityClass];
+        if (isBoosted) baseReward *= 2;
+        
+        const totalReward = baseReward * qty;
+        btn.innerText = `♻️ Recycler ${qty} carte${qty > 1 ? 's' : ''} (+${totalReward} VP)`;
+    }
+
     function openModal(card, count, isBoosted) {
         currentOpenCard = card;
         currentOpenCount = count;
         
         const isOwner = (currentViewerName.toLowerCase() === currentSearchedViewer.toLowerCase());
-        const recycleBtn = document.getElementById('recycle-btn');
+        const recycleControls = document.getElementById('recycle-controls-wrapper');
         const boostTag = document.getElementById('modal-boost-tag');
 
-        // Gérer le macaron Boost
         boostTag.style.display = isBoosted ? 'block' : 'none';
 
-        // Gérer le bouton de Recyclage
+        // Affichage des contrôles de recyclage
         if (isOwner && count > 1) {
-            recycleBtn.style.display = 'block';
-            recycleBtn.disabled = false;
-            let val = VP_RECYCLE_VALUES[card.rarityClass];
-            if(isBoosted) val *= 2;
-            recycleBtn.innerText = `♻️ Recycler (+${val} VP)`;
+            recycleControls.style.display = 'flex';
+            document.getElementById('recycle-btn').disabled = false;
+            
+            const slider = document.getElementById('recycle-slider');
+            slider.max = count - 1; // Règle d'or : Ne jamais descendre à 0
+            slider.value = 1;
+            
+            updateRecycleUI(); // On calcule l'affichage initial
         } else {
-            recycleBtn.style.display = 'none';
+            recycleControls.style.display = 'none';
         }
 
         let rColor, bgGradient;
@@ -584,38 +536,41 @@
         document.getElementById('card-modal').style.display = 'flex';
     }
 
-    function closeModal(event) {
-        document.getElementById('card-modal').style.display = 'none';
-    }
+    function closeModal(event) { document.getElementById('card-modal').style.display = 'none'; }
 
-    // FONCTION DE RECYCLAGE (NOUVEAU)
+    // FONCTION DE RECYCLAGE MULTIPLE
     function recyclerCarte() {
         if (!currentOpenCard) return;
         
         const btn = document.getElementById('recycle-btn');
+        const slider = document.getElementById('recycle-slider');
+        const qtyToRecycle = parseInt(slider.value, 10);
+        
         btn.disabled = true;
         btn.innerText = "⏳ Recyclage en cours...";
 
         const isBoosted = (currentOpenCard.id === currentProfileData.boostCard);
-        let reward = VP_RECYCLE_VALUES[currentOpenCard.rarityClass];
-        if (isBoosted) reward *= 2;
+        let baseReward = VP_RECYCLE_VALUES[currentOpenCard.rarityClass];
+        if (isBoosted) baseReward *= 2;
+        
+        const totalReward = baseReward * qtyToRecycle;
 
-        let url = `${API_URL}?action=recycle&viewer=${encodeURIComponent(currentViewerName)}&cardId=${currentOpenCard.id}&vpReward=${reward}&nocache=${new Date().getTime()}`;
+        let url = `${API_URL}?action=recycle&viewer=${encodeURIComponent(currentViewerName)}&cardId=${currentOpenCard.id}&vpReward=${totalReward}&amount=${qtyToRecycle}&nocache=${new Date().getTime()}`;
 
         fetch(url).then(r => r.json()).then(res => {
             if(res.success) {
-                alert(`♻️ Succès ! Vous avez gagné ${reward} Vibe Points.`);
+                alert(`♻️ Succès ! Vous avez recyclé ${qtyToRecycle} carte(s) pour ${totalReward} Vibe Points.`);
                 closeModal();
-                // On recharge silencieusement le profil pour actualiser les compteurs
                 fetchCollection(currentViewerName);
             } else {
-                alert("Erreur lors du recyclage.");
+                alert("Erreur: " + res.message);
                 btn.disabled = false;
-                btn.innerText = `♻️ Recycler (+${reward} VP)`;
+                updateRecycleUI(); // Remet le texte du bouton à la normale
             }
         }).catch(err => {
             alert("Erreur réseau.");
             btn.disabled = false;
+            updateRecycleUI();
         });
     }
 
@@ -640,10 +595,10 @@
                 a.href = dataURL; a.download = fileName; 
                 document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 btn.innerText = "✅ Téléchargée !";
-                setTimeout(() => { btn.innerText = "💾 Télécharger"; }, 2000);
+                setTimeout(() => { btn.innerText = "💾 Télécharger la carte"; }, 2000);
             }).catch(function (error) {
                 if(hasHolo) holoEl.style.display = 'block';
-                btn.innerText = "💾 Télécharger";
+                btn.innerText = "💾 Télécharger la carte";
             });
         }, 150); 
     }
