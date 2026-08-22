@@ -223,8 +223,17 @@
         <p style="text-align:center; color:#ccc; margin-top:-10px;">Dépense tes Vibe Points pour compléter ta collection !</p>
         
         <div id="shop-items-container" style="display: flex; justify-content: center; gap: 20px; margin-top: 25px; flex-wrap: wrap;">
-            <!-- Les cartes de la boutique s'injecteront ici -->
         </div>
+    </div>
+</div>
+
+<!-- MODALE D'ÉDITION DE VITRINE -->
+<div id="showcase-edit-modal" class="modal" onclick="closeShowcaseEdit()">
+    <div class="modal-content" style="width: 90%; max-width: 600px; background: #151026; padding: 25px; border: 3px solid #3498db; border-radius: 15px;" onclick="event.stopPropagation()">
+        <h2 style="color:#3498db; font-family:'Bebas Neue'; margin-top:0;">CHOISIS TES 3 CARTES</h2>
+        <p style="color:#aaa;">Clique sur tes cartes pour les ajouter/retirer de ta vitrine.</p>
+        <div id="showcase-select-grid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-height:400px; overflow-y:auto; padding:10px;"></div>
+        <button class="action-btn" style="background-color: #2ecc71; margin-top:20px;" onclick="saveShowcase()">Enregistrer ma vitrine</button>
     </div>
 </div>
 
@@ -237,7 +246,7 @@
     let currentSearchedViewer = "";
     let knownViewers = [];
     let currentOpenCard = null;
-    let currentOpenCount = 0;
+    let selectedShowcase = [];
     
     let currentProfileData = { inventory: {}, economy: { vibePoints: 0 }, boostCard: null };
 
@@ -395,7 +404,7 @@
                 div.className = 'autocomplete-item';
                 div.innerHTML = `<strong>${match.substring(0, val.length)}</strong>${match.substring(val.length)}`;
                 div.onclick = function() { document.getElementById('search-input').value = match; list.style.display = 'none'; rechercherViewer(); };
-                list.appendChild(div);
+                div.appendChild(div);
             });
         } else { list.style.display = 'none'; }
     }
@@ -421,7 +430,6 @@
     function fetchCollection(viewer) {
         document.getElementById('vp-display-container').style.display = 'none';
         
-        // Afficher ou masquer le bouton d'édition de la vitrine selon si c'est le profil du viewer connecté
         const editBtn = document.getElementById('edit-showcase-btn');
         if (editBtn) {
             if (currentViewerName && currentViewerName.toLowerCase() === viewer.toLowerCase()) {
@@ -819,7 +827,7 @@
                     }
                 });
             } else {
-                container.style.display = 'block'; // On affiche le conteneur pour que le bouton d'édition reste visible même si vide
+                container.style.display = 'block';
                 grid.innerHTML = '<div style="color:#aaa; font-size:14px; font-style:italic;">Aucune carte épinglée.</div>';
             }
         }).catch(() => {
@@ -837,22 +845,55 @@
     }
 
     function ouvrirGestionVitrine() {
-        let ids = prompt("Entre les IDs de tes 3 cartes préférées (ex: VIBE-C001,VIBE-R002,VIBE-L001) :", "");
-        if (ids !== null) {
-            let url = `${API_URL}?action=updateShowcase&viewer=${encodeURIComponent(currentViewerName)}&cardIds=${encodeURIComponent(ids)}&nocache=${new Date().getTime()}`;
-            fetch(url)
-            .then(r => r.json())
-            .then(res => {
-                if(res.success) {
-                    alert("✨ Vitrine mise à jour avec succès !");
-                    fetchShowcase(currentViewerName);
-                } else {
-                    alert("Erreur lors de la mise à jour.");
-                }
-            }).catch(() => {
-                alert("Erreur réseau.");
-            });
-        }
+        const modal = document.getElementById('showcase-edit-modal');
+        const grid = document.getElementById('showcase-select-grid');
+        grid.innerHTML = '';
+        selectedShowcase = [];
+
+        fetch(`${API_URL}?action=getShowcase&viewer=${encodeURIComponent(currentViewerName)}`)
+        .then(r => r.json()).then(ids => { selectedShowcase = ids; });
+
+        allCards.forEach(card => {
+            if (currentProfileData.inventory[card.id] > 0) {
+                const isSelected = selectedShowcase.includes(card.id);
+                const div = document.createElement('div');
+                div.className = `mini-card ${card.rarityClass} ${isSelected ? 'daily-boost' : ''}`;
+                div.style.width = "70px"; div.style.height = "100px";
+                div.innerHTML = `
+                    <img src="${card.image}" style="width:100%; height:100%; object-fit:cover;">
+                    ${isSelected ? '<div class="boost-tag">🔥</div>' : ''}
+                `;
+                
+                div.onclick = () => {
+                    if (selectedShowcase.includes(card.id)) {
+                        selectedShowcase = selectedShowcase.filter(id => id !== card.id);
+                        div.classList.remove('daily-boost');
+                        div.querySelector('.boost-tag')?.remove();
+                    } else if (selectedShowcase.length < 3) {
+                        selectedShowcase.push(card.id);
+                        div.classList.add('daily-boost');
+                        div.innerHTML += '<div class="boost-tag">🔥</div>';
+                    } else {
+                        alert("Tu ne peux choisir que 3 cartes !");
+                    }
+                };
+                grid.appendChild(div);
+            }
+        });
+        modal.style.display = 'flex';
+    }
+
+    function closeShowcaseEdit() { document.getElementById('showcase-edit-modal').style.display = 'none'; }
+
+    function saveShowcase() {
+        let url = `${API_URL}?action=updateShowcase&viewer=${encodeURIComponent(currentViewerName)}&cardIds=${encodeURIComponent(selectedShowcase.join(','))}`;
+        fetch(url)
+        .then(r => r.json())
+        .then(res => {
+            alert("✨ Vitrine mise à jour avec succès !");
+            closeShowcaseEdit();
+            fetchShowcase(currentViewerName);
+        });
     }
     
     checkTwitchLogin();
