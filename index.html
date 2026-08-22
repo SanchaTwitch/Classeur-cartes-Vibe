@@ -148,7 +148,8 @@
             <input type="text" id="search-input" placeholder="Chercher un viewer (ex: Sancha_)..." oninput="showSuggestions(this.value)" autocomplete="off">
             <div id="autocomplete-list" class="autocomplete-list"></div>
         </div>
-        <button onclick="rechercherViewer()">🔎 Inspecter</button>
+        <button onclick="rechercherViewer()">🔎 Rechercher</button>
+        <button onclick="ouvrirClassement()" style="background-color: #f1c40f; color: black; margin-left: 10px;">🏆 Classement</button>
     </div>
 
     <div id="message-box">Chargement de la collection...</div>
@@ -179,11 +180,28 @@
         <div class="modal-buttons" style="flex-direction: column;">
             <button id="download-btn" class="action-btn" onclick="downloadCard()">💾 Télécharger la carte</button>
             
-            <!-- BLOC RECYCLAGE DYNAMIQUE -->
             <div id="recycle-controls-wrapper">
                 <label>Quantité à recycler : <span id="recycle-qty-display" style="color:#ffd700; font-weight:bold;">1</span></label>
                 <input type="range" id="recycle-slider" min="1" max="1" value="1" oninput="updateRecycleUI()">
                 <button id="recycle-btn" class="action-btn" onclick="recyclerCarte()">♻️ Recycler</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="leaderboard-modal" class="modal" onclick="closeLeaderboard(event)">
+    <div class="modal-content" style="width: 90%; max-width: 800px; background: #151026; padding: 25px; border: 3px solid #f1c40f; border-radius: 15px; text-align: left;" onclick="event.stopPropagation()">
+        <span class="close-modal" onclick="closeLeaderboard(event)" style="top: -15px; right: -15px;">&times;</span>
+        <h1 style="color:#ffd700; font-family:'Bebas Neue'; font-size:40px; text-align:center; margin-top:0;">🏆 CLASSEMENT GÉNÉRAL 🏆</h1>
+        
+        <div style="display: flex; justify-content: space-between; gap: 20px; margin-top: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; border-top: 4px solid #3498db; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                <h2 style="color:#3498db; text-align:center; font-family:'Bebas Neue'; letter-spacing:1px; margin-top:0;">🃏 TOP COLLECTIONNEURS</h2>
+                <div id="lb-collection"></div>
+            </div>
+            <div style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; border-top: 4px solid #2ecc71; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                <h2 style="color:#2ecc71; text-align:center; font-family:'Bebas Neue'; letter-spacing:1px; margin-top:0;">💎 TOP RICHESSE</h2>
+                <div id="lb-economy"></div>
             </div>
         </div>
     </div>
@@ -610,6 +628,48 @@
                 btn.innerText = "💾 Télécharger la carte";
             });
         }, 150); 
+    }
+
+    // --- SYSTÈME DE CLASSEMENT ---
+    function ouvrirClassement() {
+        document.getElementById('leaderboard-modal').style.display = 'flex';
+        document.getElementById('lb-collection').innerHTML = '<div style="text-align:center; padding:20px; font-weight:bold; color:#aaa;">⏳ Interrogation des Dieux...</div>';
+        document.getElementById('lb-economy').innerHTML = '<div style="text-align:center; padding:20px; font-weight:bold; color:#aaa;">⏳ Interrogation des Banques...</div>';
+
+        fetch(`${API_URL}?action=getLeaderboard&nocache=${new Date().getTime()}`)
+        .then(r => r.json())
+        .then(data => {
+            renderLeaderboardList('lb-collection', data.topCollection, 'count', 'cartes');
+            renderLeaderboardList('lb-economy', data.topEconomy, 'vp', 'VP');
+        }).catch(err => {
+            document.getElementById('lb-collection').innerHTML = "<div style='text-align:center; color:#e74c3c;'>Erreur de chargement.</div>";
+            document.getElementById('lb-economy').innerHTML = "<div style='text-align:center; color:#e74c3c;'>Erreur de chargement.</div>";
+        });
+    }
+
+    function closeLeaderboard(event) {
+        document.getElementById('leaderboard-modal').style.display = 'none';
+    }
+
+    function renderLeaderboardList(containerId, list, key, suffix) {
+        let html = '';
+        list.forEach((user, index) => {
+            let medal = '';
+            let medalColor = 'white';
+            if (index === 0) { medal = '🥇'; medalColor = '#ffd700'; }
+            else if (index === 1) { medal = '🥈'; medalColor = '#bdc3c7'; }
+            else if (index === 2) { medal = '🥉'; medalColor = '#cd7f32'; }
+            else { medal = `<span style="display:inline-block; width:25px; text-align:center; color:#aaa; font-size:16px;">#${index + 1}</span>`; }
+
+            html += `<div style="display:flex; justify-content:space-between; padding:10px 15px; margin-bottom:5px; border-radius:5px; background:rgba(255,255,255,0.05); align-items:center; cursor:pointer; transition:0.2s;" 
+                          onmouseover="this.style.background='#9146FF'" 
+                          onmouseout="this.style.background='rgba(255,255,255,0.05)'" 
+                          onclick="document.getElementById('search-input').value='${user.name}'; rechercherViewer(); closeLeaderboard();">
+                        <span style="font-size:18px;">${medal} <span style="margin-left:10px; font-weight:bold; color:${medalColor};">${user.name.toUpperCase()}</span></span>
+                        <span style="color:#ffd700; font-family:'Bebas Neue'; font-size:20px; letter-spacing:1px;">${user[key]} <span style="font-size:14px; color:#ccc;">${suffix}</span></span>
+                     </div>`;
+        });
+        document.getElementById(containerId).innerHTML = html || '<div style="text-align:center; color:#aaa; padding:10px;">Aucune donnée</div>';
     }
     
     checkTwitchLogin();
