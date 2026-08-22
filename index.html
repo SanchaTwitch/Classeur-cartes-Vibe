@@ -165,6 +165,7 @@
     <div class="catalogue-grid" id="catalogue-grid"></div>
 </div>
 
+<!-- MODALE CARTE EN GRAND -->
 <div id="card-modal" class="modal" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeModal(event)">&times;</span>
@@ -198,6 +199,7 @@
     </div>
 </div>
 
+<!-- MODALE CLASSEMENT -->
 <div id="leaderboard-modal" class="modal" onclick="closeLeaderboard(event)">
     <div class="modal-content" style="width: 90%; max-width: 800px; background: #151026; padding: 25px; border: 3px solid #f1c40f; border-radius: 15px; text-align: left;" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeLeaderboard(event)" style="top: -15px; right: -15px;">&times;</span>
@@ -216,6 +218,7 @@
     </div>
 </div>
 
+<!-- MODALE BOUTIQUE -->
 <div id="shop-modal" class="modal" onclick="closeShop(event)">
     <div class="modal-content" style="width: 90%; max-width: 800px; background: #151026; padding: 25px; border: 3px solid #e67e22; border-radius: 15px; text-align: left;" onclick="event.stopPropagation()">
         <span class="close-modal" onclick="closeShop(event)" style="top: -15px; right: -15px;">&times;</span>
@@ -230,10 +233,11 @@
 <!-- MODALE D'ÉDITION DE VITRINE -->
 <div id="showcase-edit-modal" class="modal" onclick="closeShowcaseEdit()">
     <div class="modal-content" style="width: 90%; max-width: 600px; background: #151026; padding: 25px; border: 3px solid #3498db; border-radius: 15px;" onclick="event.stopPropagation()">
-        <h2 style="color:#3498db; font-family:'Bebas Neue'; margin-top:0;">CHOISIS TES 3 CARTES</h2>
+        <span class="close-modal" onclick="closeShowcaseEdit()" style="top: -15px; right: -15px;">&times;</span>
+        <h2 style="color:#3498db; font-family:'Bebas Neue'; margin-top:0; font-size:30px;">CHOISIS TES 3 CARTES</h2>
         <p style="color:#aaa;">Clique sur tes cartes pour les ajouter/retirer de ta vitrine.</p>
         <div id="showcase-select-grid" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; max-height:400px; overflow-y:auto; padding:10px;"></div>
-        <button class="action-btn" style="background-color: #2ecc71; margin-top:20px;" onclick="saveShowcase()">Enregistrer ma vitrine</button>
+        <button class="action-btn" style="background-color: #2ecc71; margin-top:20px;" onclick="saveShowcase()">💾 Enregistrer ma vitrine</button>
     </div>
 </div>
 
@@ -404,7 +408,7 @@
                 div.className = 'autocomplete-item';
                 div.innerHTML = `<strong>${match.substring(0, val.length)}</strong>${match.substring(val.length)}`;
                 div.onclick = function() { document.getElementById('search-input').value = match; list.style.display = 'none'; rechercherViewer(); };
-                div.appendChild(div);
+                list.appendChild(div);
             });
         } else { list.style.display = 'none'; }
     }
@@ -850,8 +854,8 @@
         grid.innerHTML = '';
         selectedShowcase = [];
 
-        fetch(`${API_URL}?action=getShowcase&viewer=${encodeURIComponent(currentViewerName)}`)
-        .then(r => r.json()).then(ids => { selectedShowcase = ids; });
+        fetch(`${API_URL}?action=getShowcase&viewer=${encodeURIComponent(currentViewerName)}&nocache=${new Date().getTime()}`)
+        .then(r => r.json()).then(ids => { selectedShowcase = ids || []; });
 
         allCards.forEach(card => {
             if (currentProfileData.inventory[card.id] > 0) {
@@ -869,12 +873,13 @@
                         selectedShowcase = selectedShowcase.filter(id => id !== card.id);
                         div.classList.remove('daily-boost');
                         div.querySelector('.boost-tag')?.remove();
-                    } else if (selectedShowcase.length < 3) {
+                    } 
+                    else if (selectedShowcase.length < 3) { 
                         selectedShowcase.push(card.id);
                         div.classList.add('daily-boost');
                         div.innerHTML += '<div class="boost-tag">🔥</div>';
                     } else {
-                        alert("Tu ne peux choisir que 3 cartes !");
+                        alert("Tu ne peux choisir que 3 cartes au maximum !");
                     }
                 };
                 grid.appendChild(div);
@@ -886,7 +891,7 @@
     function closeShowcaseEdit() { document.getElementById('showcase-edit-modal').style.display = 'none'; }
 
     function saveShowcase() {
-        let url = `${API_URL}?action=updateShowcase&viewer=${encodeURIComponent(currentViewerName)}&cardIds=${encodeURIComponent(selectedShowcase.join(','))}`;
+        let url = `${API_URL}?action=updateShowcase&viewer=${encodeURIComponent(currentViewerName)}&cardIds=${encodeURIComponent(selectedShowcase.join(','))}&nocache=${new Date().getTime()}`;
         fetch(url)
         .then(r => r.json())
         .then(res => {
