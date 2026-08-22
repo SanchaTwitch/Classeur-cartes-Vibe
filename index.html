@@ -689,7 +689,7 @@
         document.getElementById('shop-modal').style.display = 'flex';
         document.getElementById('shop-items-container').innerHTML = '<div style="color:#aaa; font-weight:bold; padding:30px;">⏳ Chargement de l\'étalage...</div>';
 
-        fetch(`${API_URL}?action=getShop&nocache=${new Date().getTime()}`)
+        fetch(`${API_URL}?action=getShop&viewer=${encodeURIComponent(currentViewerName)}&nocache=${new Date().getTime()}`)
         .then(r => r.json())
         .then(data => {
             if(data.success) {
@@ -716,8 +716,18 @@
             if(card.rarityClass === 'legendaire') rColor = '#ffd700';
             if(card.rarityClass === 'mythique') rColor = '#ff0055';
 
+            let btnHtml = '';
+            let cardStyle = '';
+
+            if (card.isBought) {
+                cardStyle = 'opacity: 0.5; filter: grayscale(100%);';
+                btnHtml = `<button class="action-btn" style="background-color: #7f8c8d; font-size: 14px; padding: 8px 15px; width: 100%; cursor: not-allowed;" disabled>Déjà achetée</button>`;
+            } else {
+                btnHtml = `<button class="action-btn" style="background-color: #2ecc71; font-size: 14px; padding: 8px 15px; width: 100%;" onclick="acheterCarteBoutique('${card.id}', ${card.price})">Acheter</button>`;
+            }
+
             html += `
-                <div style="background: rgba(0,0,0,0.6); border: 2px solid ${rColor}; border-radius: 10px; padding: 15px; width: 200px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: space-between;">
+                <div style="background: rgba(0,0,0,0.6); border: 2px solid ${rColor}; border-radius: 10px; padding: 15px; width: 200px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: space-between; ${cardStyle}">
                     <div>
                         <div style="font-family: 'Bebas Neue'; font-size: 16px; color: ${rColor}; margin-bottom: 5px;">${card.rarityLabel}</div>
                         <div style="width: 120px; height: 170px; margin: 0 auto 10px auto; border-radius: 6px; overflow: hidden; border: 2px solid white;">
@@ -728,7 +738,7 @@
                     </div>
                     <div>
                         <div style="font-family: 'Bebas Neue'; font-size: 22px; color: #ffd700; margin-bottom: 10px;">💎 ${card.price} VP</div>
-                        <button class="action-btn" style="background-color: #2ecc71; font-size: 14px; padding: 8px 15px; width: 100%;" onclick="acheterCarteBoutique('${card.id}', ${card.price})">Acheter</button>
+                        ${btnHtml}
                     </div>
                 </div>
             `;
