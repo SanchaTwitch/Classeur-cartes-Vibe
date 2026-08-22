@@ -47,10 +47,10 @@
 
         #message-box { text-align: center; font-size: 20px; color: #aaa; margin-top: 50px; }
         
-        .search-box { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); align-items: flex-start; }
-        .search-box input { padding: 10px 15px; font-size: 18px; border-radius: 5px; border: none; background: #222; color: white; font-family: 'Roboto Condensed', sans-serif; width: 250px; outline: none; }
+        .search-box { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); align-items: center; }
+        .search-box input { padding: 0 15px; font-size: 18px; border-radius: 5px; border: 1px solid transparent; background: #222; color: white; font-family: 'Roboto Condensed', sans-serif; width: 250px; outline: none; box-sizing: border-box; height: 45px; }
         .search-box input:focus { border: 1px solid #9146FF; }
-        .search-box button { background-color: #9146FF; color: white; padding: 10px 20px; border-radius: 5px; font-size: 18px; font-weight: bold; border: none; cursor: pointer; transition: 0.2s; height: 43px; }
+        .search-box button { display: flex; align-items: center; justify-content: center; background-color: #9146FF; color: white; padding: 0 20px; border-radius: 5px; font-size: 18px; font-weight: bold; border: none; cursor: pointer; transition: 0.2s; height: 45px; white-space: nowrap; flex-shrink: 0; box-sizing: border-box; }
         .search-box button:hover { background-color: #772ce8; transform: scale(1.05); }
 
         .search-wrapper { position: relative; }
@@ -155,9 +155,9 @@
             <div id="autocomplete-list" class="autocomplete-list"></div>
         </div>
         <button onclick="rechercherViewer()">🔎 Rechercher</button>
-        <button onclick="ouvrirClassement()" style="background-color: #f1c40f; color: black; margin-left: 10px;">🏆 Classement</button>
-        <button onclick="ouvrirBoutique()" style="background-color: #e67e22; color: white; margin-left: 10px;">🛒 Boutique</button>
-        <button onclick="ouvrirQuetes()" style="background-color: #2ecc71; color: white; margin-left: 10px; box-shadow: 0 0 10px #2ecc71;">📜 Quêtes</button>
+        <button onclick="ouvrirClassement()" style="background-color: #f1c40f; color: black;">🏆 Classement</button>
+        <button onclick="ouvrirBoutique()" style="background-color: #e67e22; color: white;">🛒 Boutique</button>
+        <button onclick="ouvrirQuetes()" style="background-color: #2ecc71; color: white; box-shadow: 0 0 10px #2ecc71;">📜 Quêtes</button>
     </div>
 
     <!-- VITRINE DE FIERTÉ -->
